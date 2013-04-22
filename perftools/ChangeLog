@@ -1,0 +1,11 @@
+Fri Mar  9 15:21:36 2012. <lyscsu@gmail.com>
+	* php解释器用SIGPROF（或SIGALRM）信号来控制php脚本的最大执行时间，正好google
+	  profile利用这个信号来采样，profile库会在程序的init节设置定时器，定时触发采样信号，
+	  导致profile发出的信号被php解释器获取，php解释器认为是php脚本执行超时，
+	  取消脚本执行，导致poppy的php客户端不能正常工作。
+	  具体修改见补丁php_compatibility_fix
+
+Mon May  14 12:08:00 2012. <chen3feng@gmail.com>
+	* tcmalloc_debug 和 glog 都定义了 symbolize_stacktrace，一起用造成链接冲突，统一使用
+	  glog 中定义的。
+
