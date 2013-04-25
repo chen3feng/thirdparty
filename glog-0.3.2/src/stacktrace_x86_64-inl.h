@@ -31,6 +31,13 @@
 //
 // Produce stack trace using libgcc
 
+// For clang 3.2 and earlier
+#ifdef __clang__
+#if __clang_major__ < 3 || __clang_major__ == 3 && __clang_minor__ <= 2
+#define __unwind_word__ __word__
+#endif  // __clang__ version
+#endif  // __clang__
+
 extern "C" {
 #include <stdlib.h> // for NULL
 #include <unwind.h> // ABI defined unwinder
