@@ -24,23 +24,23 @@ cc_binary(
     extra_cppflags = '-Wno-sign-compare',
 )
 
-cc_test(
-    name = 'btree_test',
-    srcs = 'btree_test.cc',
-    deps = [
-        ':btree_test_flags',
-        ':cpp-btree',
-    ],
-    extra_cppflags = '-Wno-sign-compare',
-)
+#cc_test(
+#    name = 'btree_test',
+#    srcs = 'btree_test.cc',
+#    deps = [
+#        ':btree_test_flags',
+#        ':cpp-btree',
+#    ],
+#    extra_cppflags = '-Wno-sign-compare',
+#)
 
 
-cc_test(
-    name = 'safe_btree_test',
-    srcs = ['safe_btree_test.cc'],
-    deps = [
-        ':btree_test_flags',
-        ':cpp-btree',
-    ],
-    extra_cppflags = '-Wno-sign-compare',
-)
+#cc_test(
+#    name = 'safe_btree_test',
+#    srcs = ['safe_btree_test.cc'],
+#    deps = [
+#        ':btree_test_flags',
+#        ':cpp-btree',
+#    ],
+#    extra_cppflags = '-Wno-sign-compare',
+#)
