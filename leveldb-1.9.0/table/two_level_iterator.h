@@ -5,7 +5,7 @@
 #ifndef STORAGE_LEVELDB_TABLE_TWO_LEVEL_ITERATOR_H_
 #define STORAGE_LEVELDB_TABLE_TWO_LEVEL_ITERATOR_H_
 
-#include "leveldb/iterator.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/iterator.h"
 
 namespace leveldb {
 

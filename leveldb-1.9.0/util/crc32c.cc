@@ -5,10 +5,10 @@
 // A portable implementation of crc32c, optimized to handle
 // four bytes at a time.
 
-#include "util/crc32c.h"
+#include "thirdparty/leveldb-1.9.0/util/crc32c.h"
 
 #include <stdint.h>
-#include "util/coding.h"
+#include "thirdparty/leveldb-1.9.0/util/coding.h"
 
 namespace leveldb {
 namespace crc32c {

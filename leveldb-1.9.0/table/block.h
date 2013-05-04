@@ -7,7 +7,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include "leveldb/iterator.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/iterator.h"
 
 namespace leveldb {
 

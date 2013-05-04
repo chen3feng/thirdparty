@@ -5,7 +5,7 @@
 #ifndef STORAGE_LEVELDB_DB_SNAPSHOT_H_
 #define STORAGE_LEVELDB_DB_SNAPSHOT_H_
 
-#include "leveldb/db.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/db.h"
 
 namespace leveldb {
 

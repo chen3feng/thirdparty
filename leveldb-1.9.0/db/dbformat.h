@@ -6,13 +6,13 @@
 #define STORAGE_LEVELDB_DB_FORMAT_H_
 
 #include <stdio.h>
-#include "leveldb/comparator.h"
-#include "leveldb/db.h"
-#include "leveldb/filter_policy.h"
-#include "leveldb/slice.h"
-#include "leveldb/table_builder.h"
-#include "util/coding.h"
-#include "util/logging.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/comparator.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/db.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/filter_policy.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/slice.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/table_builder.h"
+#include "thirdparty/leveldb-1.9.0/util/coding.h"
+#include "thirdparty/leveldb-1.9.0/util/logging.h"
 
 namespace leveldb {
 

@@ -6,8 +6,8 @@
 #define STORAGE_LEVELDB_DB_DB_ITER_H_
 
 #include <stdint.h>
-#include "leveldb/db.h"
-#include "db/dbformat.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/db.h"
+#include "thirdparty/leveldb-1.9.0/db/dbformat.h"
 
 namespace leveldb {
 

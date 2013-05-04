@@ -2,21 +2,21 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file. See the AUTHORS file for names of contributors.
 
-#include "db/version_set.h"
+#include "thirdparty/leveldb-1.9.0/db/version_set.h"
 
 #include <algorithm>
 #include <stdio.h>
-#include "db/filename.h"
-#include "db/log_reader.h"
-#include "db/log_writer.h"
-#include "db/memtable.h"
-#include "db/table_cache.h"
-#include "leveldb/env.h"
-#include "leveldb/table_builder.h"
-#include "table/merger.h"
-#include "table/two_level_iterator.h"
-#include "util/coding.h"
-#include "util/logging.h"
+#include "thirdparty/leveldb-1.9.0/db/filename.h"
+#include "thirdparty/leveldb-1.9.0/db/log_reader.h"
+#include "thirdparty/leveldb-1.9.0/db/log_writer.h"
+#include "thirdparty/leveldb-1.9.0/db/memtable.h"
+#include "thirdparty/leveldb-1.9.0/db/table_cache.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/env.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/table_builder.h"
+#include "thirdparty/leveldb-1.9.0/table/merger.h"
+#include "thirdparty/leveldb-1.9.0/table/two_level_iterator.h"
+#include "thirdparty/leveldb-1.9.0/util/coding.h"
+#include "thirdparty/leveldb-1.9.0/util/logging.h"
 
 namespace leveldb {
 

@@ -2,10 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file. See the AUTHORS file for names of contributors.
 
-#include "leveldb/options.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/options.h"
 
-#include "leveldb/comparator.h"
-#include "leveldb/env.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/comparator.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/env.h"
 
 namespace leveldb {
 

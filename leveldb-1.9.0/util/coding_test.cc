@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file. See the AUTHORS file for names of contributors.
 
-#include "util/coding.h"
+#include "thirdparty/leveldb-1.9.0/util/coding.h"
 
-#include "util/testharness.h"
+#include "thirdparty/leveldb-1.9.0/util/testharness.h"
 
 namespace leveldb {
 

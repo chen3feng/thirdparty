@@ -5,8 +5,8 @@
 #ifndef STORAGE_LEVELDB_UTIL_MUTEXLOCK_H_
 #define STORAGE_LEVELDB_UTIL_MUTEXLOCK_H_
 
-#include "port/port.h"
-#include "port/thread_annotations.h"
+#include "thirdparty/leveldb-1.9.0/port/port.h"
+#include "thirdparty/leveldb-1.9.0/port/thread_annotations.h"
 
 namespace leveldb {
 

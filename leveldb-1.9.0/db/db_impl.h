@@ -7,13 +7,13 @@
 
 #include <deque>
 #include <set>
-#include "db/dbformat.h"
-#include "db/log_writer.h"
-#include "db/snapshot.h"
-#include "leveldb/db.h"
-#include "leveldb/env.h"
-#include "port/port.h"
-#include "port/thread_annotations.h"
+#include "thirdparty/leveldb-1.9.0/db/dbformat.h"
+#include "thirdparty/leveldb-1.9.0/db/log_writer.h"
+#include "thirdparty/leveldb-1.9.0/db/snapshot.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/db.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/env.h"
+#include "thirdparty/leveldb-1.9.0/port/port.h"
+#include "thirdparty/leveldb-1.9.0/port/thread_annotations.h"
 
 namespace leveldb {
 

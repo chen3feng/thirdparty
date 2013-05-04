@@ -2,23 +2,23 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file. See the AUTHORS file for names of contributors.
 
-#include "leveldb/table.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/table.h"
 
 #include <map>
 #include <string>
-#include "db/dbformat.h"
-#include "db/memtable.h"
-#include "db/write_batch_internal.h"
-#include "leveldb/db.h"
-#include "leveldb/env.h"
-#include "leveldb/iterator.h"
-#include "leveldb/table_builder.h"
-#include "table/block.h"
-#include "table/block_builder.h"
-#include "table/format.h"
-#include "util/random.h"
-#include "util/testharness.h"
-#include "util/testutil.h"
+#include "thirdparty/leveldb-1.9.0/db/dbformat.h"
+#include "thirdparty/leveldb-1.9.0/db/memtable.h"
+#include "thirdparty/leveldb-1.9.0/db/write_batch_internal.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/db.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/env.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/iterator.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/table_builder.h"
+#include "thirdparty/leveldb-1.9.0/table/block.h"
+#include "thirdparty/leveldb-1.9.0/table/block_builder.h"
+#include "thirdparty/leveldb-1.9.0/table/format.h"
+#include "thirdparty/leveldb-1.9.0/util/random.h"
+#include "thirdparty/leveldb-1.9.0/util/testharness.h"
+#include "thirdparty/leveldb-1.9.0/util/testutil.h"
 
 namespace leveldb {
 

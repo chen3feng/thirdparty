@@ -2,18 +2,18 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file. See the AUTHORS file for names of contributors.
 
-#include "leveldb/table.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/table.h"
 
-#include "leveldb/cache.h"
-#include "leveldb/comparator.h"
-#include "leveldb/env.h"
-#include "leveldb/filter_policy.h"
-#include "leveldb/options.h"
-#include "table/block.h"
-#include "table/filter_block.h"
-#include "table/format.h"
-#include "table/two_level_iterator.h"
-#include "util/coding.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/cache.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/comparator.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/env.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/filter_policy.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/options.h"
+#include "thirdparty/leveldb-1.9.0/table/block.h"
+#include "thirdparty/leveldb-1.9.0/table/filter_block.h"
+#include "thirdparty/leveldb-1.9.0/table/format.h"
+#include "thirdparty/leveldb-1.9.0/table/two_level_iterator.h"
+#include "thirdparty/leveldb-1.9.0/util/coding.h"
 
 namespace leveldb {
 

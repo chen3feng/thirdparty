@@ -32,7 +32,6 @@ cc_library(name = 'leveldb',
         'db/db_impl.cc',
         'db/db_iter.cc',
         'db/filename.cc',
-        'db/leveldb_main.cc',
         'db/log_reader.cc',
         'db/log_writer.cc',
         'db/memtable.cc',
@@ -40,7 +39,16 @@ cc_library(name = 'leveldb',
         'db/table_cache.cc',
         'db/version_edit.cc',
         'db/version_set.cc',
-        'db/write_batch.cc'
-        ]
+        'db/write_batch.cc',
+        'port/port_posix.cc',
+        ],
+    defs = ['LEVELDB_PLATFORM_POSIX',],
+    warning = 'no',
+    deps = ['#pthread'],
     )
 
+cc_binary(name = 'leveldb_main',
+          srcs = 'db/leveldb_main.cc',
+          deps = [':leveldb'],
+          defs = ['LEVELDB_PLATFORM_POSIX',],
+          )

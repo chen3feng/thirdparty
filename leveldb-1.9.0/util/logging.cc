@@ -2,14 +2,14 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file. See the AUTHORS file for names of contributors.
 
-#include "util/logging.h"
+#include "thirdparty/leveldb-1.9.0/util/logging.h"
 
 #include <errno.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "leveldb/env.h"
-#include "leveldb/slice.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/env.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/slice.h"
 
 namespace leveldb {
 

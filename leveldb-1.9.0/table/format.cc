@@ -2,13 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file. See the AUTHORS file for names of contributors.
 
-#include "table/format.h"
+#include "thirdparty/leveldb-1.9.0/table/format.h"
 
-#include "leveldb/env.h"
-#include "port/port.h"
-#include "table/block.h"
-#include "util/coding.h"
-#include "util/crc32c.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/env.h"
+#include "thirdparty/leveldb-1.9.0/port/port.h"
+#include "thirdparty/leveldb-1.9.0/table/block.h"
+#include "thirdparty/leveldb-1.9.0/util/coding.h"
+#include "thirdparty/leveldb-1.9.0/util/crc32c.h"
 
 namespace leveldb {
 

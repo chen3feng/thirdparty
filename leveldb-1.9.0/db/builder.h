@@ -5,7 +5,7 @@
 #ifndef STORAGE_LEVELDB_DB_BUILDER_H_
 #define STORAGE_LEVELDB_DB_BUILDER_H_
 
-#include "leveldb/status.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/status.h"
 
 namespace leveldb {
 

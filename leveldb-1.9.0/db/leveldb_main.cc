@@ -3,18 +3,18 @@
 // found in the LICENSE file. See the AUTHORS file for names of contributors.
 
 #include <stdio.h>
-#include "db/dbformat.h"
-#include "db/filename.h"
-#include "db/log_reader.h"
-#include "db/version_edit.h"
-#include "db/write_batch_internal.h"
-#include "leveldb/env.h"
-#include "leveldb/iterator.h"
-#include "leveldb/options.h"
-#include "leveldb/status.h"
-#include "leveldb/table.h"
-#include "leveldb/write_batch.h"
-#include "util/logging.h"
+#include "thirdparty/leveldb-1.9.0/db/dbformat.h"
+#include "thirdparty/leveldb-1.9.0/db/filename.h"
+#include "thirdparty/leveldb-1.9.0/db/log_reader.h"
+#include "thirdparty/leveldb-1.9.0/db/version_edit.h"
+#include "thirdparty/leveldb-1.9.0/db/write_batch_internal.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/env.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/iterator.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/options.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/status.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/table.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/write_batch.h"
+#include "thirdparty/leveldb-1.9.0/util/logging.h"
 
 namespace leveldb {
 

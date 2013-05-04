@@ -26,13 +26,13 @@
 //     num_restarts: uint32
 // restarts[i] contains the offset within the block of the ith restart point.
 
-#include "table/block_builder.h"
+#include "thirdparty/leveldb-1.9.0/table/block_builder.h"
 
 #include <algorithm>
 #include <assert.h>
-#include "leveldb/comparator.h"
-#include "leveldb/table_builder.h"
-#include "util/coding.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/comparator.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/table_builder.h"
+#include "thirdparty/leveldb-1.9.0/util/coding.h"
 
 namespace leveldb {
 

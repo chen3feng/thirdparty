@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file. See the AUTHORS file for names of contributors.
 
-#include "db/db_impl.h"
+#include "thirdparty/leveldb-1.9.0/db/db_impl.h"
 
 #include <algorithm>
 #include <set>
@@ -10,28 +10,28 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <vector>
-#include "db/builder.h"
-#include "db/db_iter.h"
-#include "db/dbformat.h"
-#include "db/filename.h"
-#include "db/log_reader.h"
-#include "db/log_writer.h"
-#include "db/memtable.h"
-#include "db/table_cache.h"
-#include "db/version_set.h"
-#include "db/write_batch_internal.h"
-#include "leveldb/db.h"
-#include "leveldb/env.h"
-#include "leveldb/status.h"
-#include "leveldb/table.h"
-#include "leveldb/table_builder.h"
-#include "port/port.h"
-#include "table/block.h"
-#include "table/merger.h"
-#include "table/two_level_iterator.h"
-#include "util/coding.h"
-#include "util/logging.h"
-#include "util/mutexlock.h"
+#include "thirdparty/leveldb-1.9.0/db/builder.h"
+#include "thirdparty/leveldb-1.9.0/db/db_iter.h"
+#include "thirdparty/leveldb-1.9.0/db/dbformat.h"
+#include "thirdparty/leveldb-1.9.0/db/filename.h"
+#include "thirdparty/leveldb-1.9.0/db/log_reader.h"
+#include "thirdparty/leveldb-1.9.0/db/log_writer.h"
+#include "thirdparty/leveldb-1.9.0/db/memtable.h"
+#include "thirdparty/leveldb-1.9.0/db/table_cache.h"
+#include "thirdparty/leveldb-1.9.0/db/version_set.h"
+#include "thirdparty/leveldb-1.9.0/db/write_batch_internal.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/db.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/env.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/status.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/table.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/table_builder.h"
+#include "thirdparty/leveldb-1.9.0/port/port.h"
+#include "thirdparty/leveldb-1.9.0/table/block.h"
+#include "thirdparty/leveldb-1.9.0/table/merger.h"
+#include "thirdparty/leveldb-1.9.0/table/two_level_iterator.h"
+#include "thirdparty/leveldb-1.9.0/util/coding.h"
+#include "thirdparty/leveldb-1.9.0/util/logging.h"
+#include "thirdparty/leveldb-1.9.0/util/mutexlock.h"
 
 namespace leveldb {
 

@@ -22,7 +22,7 @@
 #define STORAGE_LEVELDB_INCLUDE_WRITE_BATCH_H_
 
 #include <string>
-#include "leveldb/status.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/status.h"
 
 namespace leveldb {
 

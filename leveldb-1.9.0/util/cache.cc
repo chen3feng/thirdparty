@@ -6,10 +6,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "leveldb/cache.h"
-#include "port/port.h"
-#include "util/hash.h"
-#include "util/mutexlock.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/cache.h"
+#include "thirdparty/leveldb-1.9.0/port/port.h"
+#include "thirdparty/leveldb-1.9.0/util/hash.h"
+#include "thirdparty/leveldb-1.9.0/util/mutexlock.h"
 
 namespace leveldb {
 

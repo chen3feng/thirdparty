@@ -18,10 +18,10 @@
 #include <map>
 #include <set>
 #include <vector>
-#include "db/dbformat.h"
-#include "db/version_edit.h"
-#include "port/port.h"
-#include "port/thread_annotations.h"
+#include "thirdparty/leveldb-1.9.0/db/dbformat.h"
+#include "thirdparty/leveldb-1.9.0/db/version_edit.h"
+#include "thirdparty/leveldb-1.9.0/port/port.h"
+#include "thirdparty/leveldb-1.9.0/port/thread_annotations.h"
 
 namespace leveldb {
 

@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file. See the AUTHORS file for names of contributors.
 
-#include "port/port_posix.h"
+#include "thirdparty/leveldb-1.9.0/port/port_posix.h"
 
 #include <cstdlib>
 #include <stdio.h>
 #include <string.h>
-#include "util/logging.h"
+#include "thirdparty/leveldb-1.9.0/util/logging.h"
 
 namespace leveldb {
 namespace port {

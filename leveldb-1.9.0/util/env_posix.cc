@@ -20,12 +20,12 @@
 #if defined(LEVELDB_PLATFORM_ANDROID)
 #include <sys/stat.h>
 #endif
-#include "leveldb/env.h"
-#include "leveldb/slice.h"
-#include "port/port.h"
-#include "util/logging.h"
-#include "util/mutexlock.h"
-#include "util/posix_logger.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/env.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/slice.h"
+#include "thirdparty/leveldb-1.9.0/port/port.h"
+#include "thirdparty/leveldb-1.9.0/util/logging.h"
+#include "thirdparty/leveldb-1.9.0/util/mutexlock.h"
+#include "thirdparty/leveldb-1.9.0/util/posix_logger.h"
 
 namespace leveldb {
 

@@ -6,10 +6,10 @@
 #define STORAGE_LEVELDB_DB_MEMTABLE_H_
 
 #include <string>
-#include "leveldb/db.h"
-#include "db/dbformat.h"
-#include "db/skiplist.h"
-#include "util/arena.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/db.h"
+#include "thirdparty/leveldb-1.9.0/db/dbformat.h"
+#include "thirdparty/leveldb-1.9.0/db/skiplist.h"
+#include "thirdparty/leveldb-1.9.0/util/arena.h"
 
 namespace leveldb {
 

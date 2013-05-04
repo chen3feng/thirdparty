@@ -24,19 +24,19 @@
 //   Store per-table metadata (smallest, largest, largest-seq#, ...)
 //   in the table's meta section to speed up ScanTable.
 
-#include "db/builder.h"
-#include "db/db_impl.h"
-#include "db/dbformat.h"
-#include "db/filename.h"
-#include "db/log_reader.h"
-#include "db/log_writer.h"
-#include "db/memtable.h"
-#include "db/table_cache.h"
-#include "db/version_edit.h"
-#include "db/write_batch_internal.h"
-#include "leveldb/comparator.h"
-#include "leveldb/db.h"
-#include "leveldb/env.h"
+#include "thirdparty/leveldb-1.9.0/db/builder.h"
+#include "thirdparty/leveldb-1.9.0/db/db_impl.h"
+#include "thirdparty/leveldb-1.9.0/db/dbformat.h"
+#include "thirdparty/leveldb-1.9.0/db/filename.h"
+#include "thirdparty/leveldb-1.9.0/db/log_reader.h"
+#include "thirdparty/leveldb-1.9.0/db/log_writer.h"
+#include "thirdparty/leveldb-1.9.0/db/memtable.h"
+#include "thirdparty/leveldb-1.9.0/db/table_cache.h"
+#include "thirdparty/leveldb-1.9.0/db/version_edit.h"
+#include "thirdparty/leveldb-1.9.0/db/write_batch_internal.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/comparator.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/db.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/env.h"
 
 namespace leveldb {
 

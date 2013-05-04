@@ -4,10 +4,10 @@
 
 #include <algorithm>
 #include <stdint.h>
-#include "leveldb/comparator.h"
-#include "leveldb/slice.h"
-#include "port/port.h"
-#include "util/logging.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/comparator.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/slice.h"
+#include "thirdparty/leveldb-1.9.0/port/port.h"
+#include "thirdparty/leveldb-1.9.0/util/logging.h"
 
 namespace leveldb {
 

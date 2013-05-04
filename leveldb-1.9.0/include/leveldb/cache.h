@@ -19,7 +19,7 @@
 #define STORAGE_LEVELDB_INCLUDE_CACHE_H_
 
 #include <stdint.h>
-#include "leveldb/slice.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/slice.h"
 
 namespace leveldb {
 

@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file. See the AUTHORS file for names of contributors.
 
-#include "table/two_level_iterator.h"
+#include "thirdparty/leveldb-1.9.0/table/two_level_iterator.h"
 
-#include "leveldb/table.h"
-#include "table/block.h"
-#include "table/format.h"
-#include "table/iterator_wrapper.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/table.h"
+#include "thirdparty/leveldb-1.9.0/table/block.h"
+#include "thirdparty/leveldb-1.9.0/table/format.h"
+#include "thirdparty/leveldb-1.9.0/table/iterator_wrapper.h"
 
 namespace leveldb {
 

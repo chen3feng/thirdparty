@@ -5,9 +5,9 @@
 #ifndef STORAGE_LEVELDB_UTIL_TESTUTIL_H_
 #define STORAGE_LEVELDB_UTIL_TESTUTIL_H_
 
-#include "leveldb/env.h"
-#include "leveldb/slice.h"
-#include "util/random.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/env.h"
+#include "thirdparty/leveldb-1.9.0/include/leveldb/slice.h"
+#include "thirdparty/leveldb-1.9.0/util/random.h"
 
 namespace leveldb {
 namespace test {

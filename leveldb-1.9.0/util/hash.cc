@@ -3,8 +3,8 @@
 // found in the LICENSE file. See the AUTHORS file for names of contributors.
 
 #include <string.h>
-#include "util/coding.h"
-#include "util/hash.h"
+#include "thirdparty/leveldb-1.9.0/util/coding.h"
+#include "thirdparty/leveldb-1.9.0/util/hash.h"
 
 namespace leveldb {
 
