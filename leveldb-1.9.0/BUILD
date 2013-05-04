@@ -42,7 +42,6 @@ cc_library(name = 'leveldb',
         'db/write_batch.cc',
         'port/port_posix.cc',
         ],
-    defs = ['LEVELDB_PLATFORM_POSIX',],
     warning = 'no',
     deps = ['#pthread'],
     )
@@ -50,5 +49,4 @@ cc_library(name = 'leveldb',
 cc_binary(name = 'leveldb_main',
           srcs = 'db/leveldb_main.cc',
           deps = [':leveldb'],
-          defs = ['LEVELDB_PLATFORM_POSIX',],
           )
