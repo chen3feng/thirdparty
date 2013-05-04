@@ -11,9 +11,6 @@ DEFINE_string(test_tmpdir, "/var/tmp", "temp directory");
 using testing::Benchmark;
 using namespace re2;
 
-static Benchmark* benchmarks[10000];
-static int nbenchmarks;
-
 void Benchmark::Register() {
 	benchmarks[nbenchmarks] = this;
 	if(lo < 1)
