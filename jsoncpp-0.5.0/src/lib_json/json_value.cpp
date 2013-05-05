@@ -171,7 +171,7 @@ Value::CommentInfo::setComment( const char *text )
 // Notes: index_ indicates if the string was allocated when
 // a string is stored.
 
-Value::CZString::CZString( int index )
+Value::CZString::CZString( size_t index )
    : cstr_( 0 )
    , index_( index )
 {
@@ -231,7 +231,7 @@ Value::CZString::operator==( const CZString &other ) const
 }
 
 
-int 
+size_t
 Value::CZString::index() const
 {
    return index_;

@@ -3,6 +3,8 @@
 
 # include "thirdparty/jsoncpp-0.5.0/include/json/config.h"
 
+#include <stdint.h>
+
 namespace Json {
 
    // writer.h
@@ -16,8 +18,8 @@ namespace Json {
    class Features;
 
    // value.h
-   typedef int Int;
-   typedef unsigned int UInt;
+   typedef int64_t Int;
+   typedef uint64_t UInt;
    class StaticString;
    class Path;
    class PathArgument;
