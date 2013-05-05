@@ -140,20 +140,20 @@ namespace Json {
             duplicate,
             duplicateOnCopy
          };
-         CZString( size_t index );
+         CZString( int index );
          CZString( const char *cstr, DuplicationPolicy allocate );
          CZString( const CZString &other );
          ~CZString();
          CZString &operator =( const CZString &other );
          bool operator<( const CZString &other ) const;
          bool operator==( const CZString &other ) const;
-         size_t index() const;
+         int index() const;
          const char *c_str() const;
          bool isStaticString() const;
       private:
          void swap( CZString &other );
          const char *cstr_;
-         size_t index_;
+         int index_;
       };
 
    public:

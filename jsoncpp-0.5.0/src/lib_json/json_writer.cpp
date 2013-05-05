@@ -27,106 +27,7 @@ static bool containsControlCharacter( const char* str )
    }
    return false;
 }
-
-namespace {
-
-template <typename STR, typename INT, typename UINT, bool NEG>
-struct IntToStringT {
-  // This is to avoid a compiler warning about unary minus on unsigned type.
-  // For example, say you had the following code:
-  //   template <typename INT>
-  //   INT abs(INT value) { return value < 0 ? -value : value; }
-  // Even though if INT is unsigned, it's impossible for value < 0, so the
-  // unary minus will never be taken, the compiler will still generate a
-  // warning.  We do a little specialization dance...
-  template <typename INT2, typename UINT2, bool NEG2>
-  struct ToUnsignedT { };
-
-  template <typename INT2, typename UINT2>
-  struct ToUnsignedT<INT2, UINT2, false> {
-    static UINT2 ToUnsigned(INT2 value) {
-      return static_cast<UINT2>(value);
-    }
-  };
-
-  template <typename INT2, typename UINT2>
-  struct ToUnsignedT<INT2, UINT2, true> {
-    static UINT2 ToUnsigned(INT2 value) {
-      return static_cast<UINT2>(value < 0 ? -value : value);
-    }
-  };
-
-  // This set of templates is very similar to the above templates, but
-  // for testing whether an integer is negative.
-  template <typename INT2, bool NEG2>
-  struct TestNegT { };
-  template <typename INT2>
-  struct TestNegT<INT2, false> {
-    static bool TestNeg(INT2 value) {
-      // value is unsigned, and can never be negative.
-      return false;
-    }
-  };
-  template <typename INT2>
-  struct TestNegT<INT2, true> {
-    static bool TestNeg(INT2 value) {
-      return value < 0;
-    }
-  };
-
-  static STR IntToString(INT value) {
-    // log10(2) ~= 0.3 bytes needed per bit or per byte log10(2**8) ~= 2.4.
-    // So round up to allocate 3 output characters per byte, plus 1 for '-'.
-    const int kOutputBufSize = 3 * sizeof(INT) + 1;
-
-    // Allocate the whole string right away, we will right back to front, and
-    // then return the substr of what we ended up using.
-    STR outbuf(kOutputBufSize, 0);
-
-    bool is_neg = TestNegT<INT, NEG>::TestNeg(value);
-    // Even though is_neg will never be true when INT is parameterized as
-    // unsigned, even the presence of the unary operation causes a warning.
-    UINT res = ToUnsignedT<INT, UINT, NEG>::ToUnsigned(value);
-
-    for (typename STR::iterator it = outbuf.end();;) {
-      --it;
-//      DCHECK(it != outbuf.begin());
-      *it = static_cast<typename STR::value_type>((res % 10) + '0');
-      res /= 10;
-
-      // We're done..
-      if (res == 0) {
-        if (is_neg) {
-          --it;
-//          DCHECK(it != outbuf.begin());
-          *it = static_cast<typename STR::value_type>('-');
-        }
-        return STR(it, outbuf.end());
-      }
-    }
-//    NOTREACHED();
-    return STR();
-  }
-};
-
-}
-std::string Int64ToString(int64_t value) {
-  return IntToStringT<std::string, int64_t, uint64_t, true>::
-      IntToString(value);
-}
-
-std::string Uint64ToString(uint64_t value) {
-  return IntToStringT<std::string, uint64_t, uint64_t, false>::
-      IntToString(value);
-}
-std::string valueToString( Int value ) {
-  return Int64ToString(value);
-}
-std::string valueToString( UInt value ) {
-  return Uint64ToString(value);
-}
-/*
-static void uintToString( unsigned int value,
+static void uintToString( unsigned int value, 
                           char *&current )
 {
    *--current = 0;
@@ -137,6 +38,7 @@ static void uintToString( unsigned int value,
    }
    while ( value != 0 );
 }
+
 std::string valueToString( Int value )
 {
    char buffer[32];
@@ -160,7 +62,7 @@ std::string valueToString( UInt value )
    assert( current >= buffer );
    return current;
 }
-*/
+
 std::string valueToString( double value )
 {
    char buffer[32];
