@@ -1,0 +1,26 @@
+cc_library(name = 're2',
+    srcs = [
+        'bitstate.cc',
+        'compile.cc',
+        'dfa.cc',
+        'filtered_re2.cc',
+        'mimics_pcre.cc',
+        'nfa.cc',
+        'onepass.cc',
+        'parse.cc',
+        'perl_groups.cc',
+        'prefilter.cc',
+        'prefilter_tree.cc',
+        'prog.cc',
+        're2.cc',
+        'regexp.cc',
+        'set.cc',
+        'simplify.cc',
+        'tostring.cc',
+        'unicode_casefold.cc',
+        'unicode_groups.cc'
+        ],
+    deps= ['//thirdparty/re2-20130115/util:util',
+           ],
+    warning = 'no'
+    )
