@@ -107,7 +107,7 @@
 #  undef EV_USE_POLL
 #  define EV_USE_POLL 0
 # endif
-   
+
 # if HAVE_EPOLL_CTL && HAVE_SYS_EPOLL_H
 #  ifndef EV_USE_EPOLL
 #   define EV_USE_EPOLL EV_FEATURE_BACKENDS
@@ -116,7 +116,7 @@
 #  undef EV_USE_EPOLL
 #  define EV_USE_EPOLL 0
 # endif
-   
+
 # if HAVE_KQUEUE && HAVE_SYS_EVENT_H
 #  ifndef EV_USE_KQUEUE
 #   define EV_USE_KQUEUE EV_FEATURE_BACKENDS
@@ -125,7 +125,7 @@
 #  undef EV_USE_KQUEUE
 #  define EV_USE_KQUEUE 0
 # endif
-   
+
 # if HAVE_PORT_H && HAVE_PORT_CREATE
 #  ifndef EV_USE_PORT
 #   define EV_USE_PORT EV_FEATURE_BACKENDS
@@ -161,7 +161,7 @@
 #  undef EV_USE_EVENTFD
 #  define EV_USE_EVENTFD 0
 # endif
- 
+
 #endif
 
 #include <stdlib.h>
@@ -474,7 +474,7 @@ struct signalfd_siginfo
  * This value is good at least till the year 4000.
  */
 #define MIN_INTERVAL  0.0001220703125 /* 1/2**13, good till 4000 */
-/*#define MIN_INTERVAL  0.00000095367431640625 /* 1/2**20, good till 2200 */
+/*#define MIN_INTERVAL  0.00000095367431640625 / * 1/2**20, good till 2200 */
 
 #define MIN_TIMEJUMP  1. /* minimum timejump that gets detected (if monotonic clock available) */
 #define MAX_BLOCKTIME 59.743 /* never wait longer than this time (to detect time jumps) */
@@ -883,7 +883,7 @@ ecb_function_ uint8_t  ecb_bitrev8  (uint8_t  x) ecb_const;
 ecb_function_ uint8_t  ecb_bitrev8  (uint8_t  x)
 {
   return (  (x * 0x0802U & 0x22110U)
-          | (x * 0x8020U & 0x88440U)) * 0x10101U >> 16; 
+          | (x * 0x8020U & 0x88440U)) * 0x10101U >> 16;
 }
 
 ecb_function_ uint16_t ecb_bitrev16 (uint16_t x) ecb_const;
@@ -1528,7 +1528,8 @@ typedef struct
   #include "ev_wrap.h"
 
   static struct ev_loop default_loop_struct;
-  EV_API_DECL struct ev_loop *ev_default_loop_ptr = 0; /* needs to be initialised to make it a definition despite extern */
+  EV_API_DECL struct ev_loop *ev_default_loop_ptr; /* needs to be initialised to make it a definition despite extern */
+  struct ev_loop *ev_default_loop_ptr = 0;
 
 #else
 
@@ -2013,7 +2014,7 @@ downheap (ANHE *heap, int N, int k)
 
       heap [k] = heap [c];
       ev_active (ANHE_w (heap [k])) = k;
-      
+
       k = c;
     }
 
@@ -2412,7 +2413,7 @@ ev_version_minor (void) EV_THROW
 }
 
 /* return true if we are running with elevated privileges and should ignore env variables */
-int inline_size ecb_cold
+inline_size ecb_cold int
 enable_secure (void)
 {
 #ifdef _WIN32
@@ -2433,7 +2434,7 @@ ev_supported_backends (void) EV_THROW
   if (EV_USE_EPOLL ) flags |= EVBACKEND_EPOLL;
   if (EV_USE_POLL  ) flags |= EVBACKEND_POLL;
   if (EV_USE_SELECT) flags |= EVBACKEND_SELECT;
-  
+
   return flags;
 }
 
@@ -3551,7 +3552,7 @@ ev_io_start (EV_P_ ev_io *w) EV_THROW
   /* common bug, apparently */
   assert (("libev: ev_io_start called with corrupted watcher", ((WL)w)->next != (WL)w));
 
-  fd_change (EV_A_ fd, w->events & EV__IOFDSET | EV_ANFD_REIFY);
+  fd_change (EV_A_ fd, w->events & (EV__IOFDSET | EV_ANFD_REIFY));
   w->events &= ~EV__IOFDSET;
 
   EV_FREQUENT_CHECK;
@@ -4792,8 +4793,8 @@ ev_walk (EV_P_ int types, void (*cb)(EV_P_ int type, void *w)) EV_THROW
           wl = wn;
         }
 #endif
-/* EV_STAT     0x00001000 /* stat data changed */
-/* EV_EMBED    0x00010000 /* embedded event loop needs sweep */
+/* EV_STAT     0x00001000 / * stat data changed */
+/* EV_EMBED    0x00010000 / * embedded event loop needs sweep */
 }
 #endif
 
