@@ -46,10 +46,10 @@
 void inline_speed
 kqueue_change (EV_P_ int fd, int filter, int flags, int fflags)
 {
-  ++kqueue_changecnt;
-  array_needsize (struct kevent, kqueue_changes, kqueue_changemax, kqueue_changecnt, EMPTY2);
+    ++kqueue_changecnt;
+    array_needsize (struct kevent, kqueue_changes, kqueue_changemax, kqueue_changecnt, EMPTY2);
 
-  EV_SET (&kqueue_changes [kqueue_changecnt - 1], fd, filter, flags, fflags, 0, 0);
+    EV_SET (&kqueue_changes [kqueue_changecnt - 1], fd, filter, flags, fflags, 0, 0);
 }
 
 /* OS X at least needs this */
@@ -63,150 +63,150 @@ kqueue_change (EV_P_ int fd, int filter, int flags, int fflags)
 static void
 kqueue_modify (EV_P_ int fd, int oev, int nev)
 {
-  if (oev != nev)
+    if (oev != nev)
     {
-      if (oev & EV_READ)
-        kqueue_change (EV_A_ fd, EVFILT_READ , EV_DELETE, 0);
+        if (oev & EV_READ)
+            kqueue_change (EV_A_ fd, EVFILT_READ , EV_DELETE, 0);
 
-      if (oev & EV_WRITE)
-        kqueue_change (EV_A_ fd, EVFILT_WRITE, EV_DELETE, 0);
+        if (oev & EV_WRITE)
+            kqueue_change (EV_A_ fd, EVFILT_WRITE, EV_DELETE, 0);
     }
 
-  /* to detect close/reopen reliably, we have to re-add */
-  /* event requests even when oev == nev */
+    /* to detect close/reopen reliably, we have to re-add */
+    /* event requests even when oev == nev */
 
-  if (nev & EV_READ)
-    kqueue_change (EV_A_ fd, EVFILT_READ , EV_ADD | EV_ENABLE, NOTE_EOF);
+    if (nev & EV_READ)
+        kqueue_change (EV_A_ fd, EVFILT_READ , EV_ADD | EV_ENABLE, NOTE_EOF);
 
-  if (nev & EV_WRITE)
-    kqueue_change (EV_A_ fd, EVFILT_WRITE, EV_ADD | EV_ENABLE, NOTE_EOF);
+    if (nev & EV_WRITE)
+        kqueue_change (EV_A_ fd, EVFILT_WRITE, EV_ADD | EV_ENABLE, NOTE_EOF);
 }
 
 static void
 kqueue_poll (EV_P_ ev_tstamp timeout)
 {
-  int res, i;
-  struct timespec ts;
+    int res, i;
+    struct timespec ts;
 
-  /* need to resize so there is enough space for errors */
-  if (kqueue_changecnt > kqueue_eventmax)
+    /* need to resize so there is enough space for errors */
+    if (kqueue_changecnt > kqueue_eventmax)
     {
-      ev_free (kqueue_events);
-      kqueue_eventmax = array_nextsize (sizeof (struct kevent), kqueue_eventmax, kqueue_changecnt);
-      kqueue_events = (struct kevent *)ev_malloc (sizeof (struct kevent) * kqueue_eventmax);
+        ev_free (kqueue_events);
+        kqueue_eventmax = array_nextsize (sizeof (struct kevent), kqueue_eventmax, kqueue_changecnt);
+        kqueue_events = (struct kevent *)ev_malloc (sizeof (struct kevent) * kqueue_eventmax);
     }
 
-  EV_RELEASE_CB;
-  EV_TS_SET (ts, timeout);
-  res = kevent (backend_fd, kqueue_changes, kqueue_changecnt, kqueue_events, kqueue_eventmax, &ts);
-  EV_ACQUIRE_CB;
-  kqueue_changecnt = 0;
+    EV_RELEASE_CB;
+    EV_TS_SET (ts, timeout);
+    res = kevent (backend_fd, kqueue_changes, kqueue_changecnt, kqueue_events, kqueue_eventmax, &ts);
+    EV_ACQUIRE_CB;
+    kqueue_changecnt = 0;
 
-  if (expect_false (res < 0))
+    if (expect_false (res < 0))
     {
-      if (errno != EINTR)
-        ev_syserr ("(libev) kevent");
+        if (errno != EINTR)
+            ev_syserr ("(libev) kevent");
 
-      return;
+        return;
     }
 
-  for (i = 0; i < res; ++i)
+    for (i = 0; i < res; ++i)
     {
-      int fd = kqueue_events [i].ident;
+        int fd = kqueue_events [i].ident;
 
-      if (expect_false (kqueue_events [i].flags & EV_ERROR))
+        if (expect_false (kqueue_events [i].flags & EV_ERROR))
         {
-          int err = kqueue_events [i].data;
+            int err = kqueue_events [i].data;
 
-          /* we are only interested in errors for fds that we are interested in :) */
-          if (anfds [fd].events)
+            /* we are only interested in errors for fds that we are interested in :) */
+            if (anfds [fd].events)
             {
-              if (err == ENOENT) /* resubmit changes on ENOENT */
-                kqueue_modify (EV_A_ fd, 0, anfds [fd].events);
-              else if (err == EBADF) /* on EBADF, we re-check the fd */
-                {
-                  if (fd_valid (fd))
+                if (err == ENOENT) /* resubmit changes on ENOENT */
                     kqueue_modify (EV_A_ fd, 0, anfds [fd].events);
-                  else
-                    fd_kill (EV_A_ fd);
+                else if (err == EBADF) /* on EBADF, we re-check the fd */
+                {
+                    if (fd_valid (fd))
+                        kqueue_modify (EV_A_ fd, 0, anfds [fd].events);
+                    else
+                        fd_kill (EV_A_ fd);
                 }
-              else /* on all other errors, we error out on the fd */
-                fd_kill (EV_A_ fd);
+                else /* on all other errors, we error out on the fd */
+                    fd_kill (EV_A_ fd);
             }
         }
-      else
-        fd_event (
-          EV_A_
-          fd,
-          kqueue_events [i].filter == EVFILT_READ ? EV_READ
-          : kqueue_events [i].filter == EVFILT_WRITE ? EV_WRITE
-          : 0
-        );
+        else
+            fd_event (
+                EV_A_
+                fd,
+                kqueue_events [i].filter == EVFILT_READ ? EV_READ
+                : kqueue_events [i].filter == EVFILT_WRITE ? EV_WRITE
+                : 0
+            );
     }
 
-  if (expect_false (res == kqueue_eventmax))
+    if (expect_false (res == kqueue_eventmax))
     {
-      ev_free (kqueue_events);
-      kqueue_eventmax = array_nextsize (sizeof (struct kevent), kqueue_eventmax, kqueue_eventmax + 1);
-      kqueue_events = (struct kevent *)ev_malloc (sizeof (struct kevent) * kqueue_eventmax);
+        ev_free (kqueue_events);
+        kqueue_eventmax = array_nextsize (sizeof (struct kevent), kqueue_eventmax, kqueue_eventmax + 1);
+        kqueue_events = (struct kevent *)ev_malloc (sizeof (struct kevent) * kqueue_eventmax);
     }
 }
 
 int inline_size
 kqueue_init (EV_P_ int flags)
 {
-  /* initialize the kernel queue */
-  kqueue_fd_pid = getpid ();
-  if ((backend_fd = kqueue ()) < 0)
-    return 0;
+    /* initialize the kernel queue */
+    kqueue_fd_pid = getpid ();
+    if ((backend_fd = kqueue ()) < 0)
+        return 0;
 
-  fcntl (backend_fd, F_SETFD, FD_CLOEXEC); /* not sure if necessary, hopefully doesn't hurt */
+    fcntl (backend_fd, F_SETFD, FD_CLOEXEC); /* not sure if necessary, hopefully doesn't hurt */
 
-  backend_mintime = 1e-9; /* apparently, they did the right thing in freebsd */
-  backend_modify  = kqueue_modify;
-  backend_poll    = kqueue_poll;
+    backend_mintime = 1e-9; /* apparently, they did the right thing in freebsd */
+    backend_modify  = kqueue_modify;
+    backend_poll    = kqueue_poll;
 
-  kqueue_eventmax = 64; /* initial number of events receivable per poll */
-  kqueue_events = (struct kevent *)ev_malloc (sizeof (struct kevent) * kqueue_eventmax);
+    kqueue_eventmax = 64; /* initial number of events receivable per poll */
+    kqueue_events = (struct kevent *)ev_malloc (sizeof (struct kevent) * kqueue_eventmax);
 
-  kqueue_changes   = 0;
-  kqueue_changemax = 0;
-  kqueue_changecnt = 0;
+    kqueue_changes   = 0;
+    kqueue_changemax = 0;
+    kqueue_changecnt = 0;
 
-  return EVBACKEND_KQUEUE;
+    return EVBACKEND_KQUEUE;
 }
 
 void inline_size
 kqueue_destroy (EV_P)
 {
-  ev_free (kqueue_events);
-  ev_free (kqueue_changes);
+    ev_free (kqueue_events);
+    ev_free (kqueue_changes);
 }
 
 void inline_size
 kqueue_fork (EV_P)
 {
-  /* some BSD kernels don't just destroy the kqueue itself,
-   * but also close the fd, which isn't documented, and
-   * impossible to support properly.
-   * we remember the pid of the kqueue call and only close
-   * the fd if the pid is still the same.
-   * this leaks fds on sane kernels, but BSD interfaces are
-   * notoriously buggy and rarely get fixed.
-   */
-  pid_t newpid = getpid ();
+    /* some BSD kernels don't just destroy the kqueue itself,
+     * but also close the fd, which isn't documented, and
+     * impossible to support properly.
+     * we remember the pid of the kqueue call and only close
+     * the fd if the pid is still the same.
+     * this leaks fds on sane kernels, but BSD interfaces are
+     * notoriously buggy and rarely get fixed.
+     */
+    pid_t newpid = getpid ();
 
-  if (newpid == kqueue_fd_pid)
-    close (backend_fd);
+    if (newpid == kqueue_fd_pid)
+        close (backend_fd);
 
-  kqueue_fd_pid = newpid;
-  while ((backend_fd = kqueue ()) < 0)
-    ev_syserr ("(libev) kqueue");
+    kqueue_fd_pid = newpid;
+    while ((backend_fd = kqueue ()) < 0)
+        ev_syserr ("(libev) kqueue");
 
-  fcntl (backend_fd, F_SETFD, FD_CLOEXEC);
+    fcntl (backend_fd, F_SETFD, FD_CLOEXEC);
 
-  /* re-register interest in fds */
-  fd_rearm_all (EV_A);
+    /* re-register interest in fds */
+    fd_rearm_all (EV_A);
 }
 
 /* sys/event.h defines EV_ERROR */

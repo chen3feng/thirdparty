@@ -60,13 +60,13 @@
 extern "C" {
 #endif
 
-/* we need sys/time.h for struct timeval only */
+    /* we need sys/time.h for struct timeval only */
 #if !defined (WIN32) || defined (__MINGW32__)
 # include <time.h> /* mingw seems to need this, for whatever reason */
 # include <sys/time.h>
 #endif
 
-struct event_base;
+    struct event_base;
 
 #define EVLIST_TIMEOUT  0x01
 #define EVLIST_INSERTED 0x02
@@ -75,29 +75,29 @@ struct event_base;
 #define EVLIST_INTERNAL 0x10
 #define EVLIST_INIT     0x80
 
-typedef void (*event_callback_fn)(int, short, void *);
+    typedef void (*event_callback_fn)(int, short, void *);
 
-struct event
-{
-  /* libev watchers we map onto */
-  union {
-    struct ev_io io;
-    struct ev_signal sig;
-  } iosig;
-  struct ev_timer to;
+    struct event
+    {
+        /* libev watchers we map onto */
+        union {
+            struct ev_io io;
+            struct ev_signal sig;
+        } iosig;
+        struct ev_timer to;
 
-  /* compatibility slots */
-  struct event_base *ev_base;
-  event_callback_fn ev_callback;
-  void *ev_arg;
-  int ev_fd;
-  int ev_pri;
-  int ev_res;
-  int ev_flags;
-  short ev_events;
-};
+        /* compatibility slots */
+        struct event_base *ev_base;
+        event_callback_fn ev_callback;
+        void *ev_arg;
+        int ev_fd;
+        int ev_pri;
+        int ev_res;
+        int ev_flags;
+        short ev_events;
+    };
 
-event_callback_fn event_get_callback (const struct event *ev);
+    event_callback_fn event_get_callback (const struct event *ev);
 
 #define EV_READ                    EV_READ
 #define EV_WRITE                   EV_WRITE
@@ -127,47 +127,47 @@ event_callback_fn event_get_callback (const struct event *ev);
 #define signal_pending(ev,tv)      event_pending (ev, EV_SIGNAL, tv)
 #define signal_initialized(ev)     event_initialized (ev)
 
-const char *event_get_version (void);
-const char *event_get_method (void);
+    const char *event_get_version (void);
+    const char *event_get_method (void);
 
-void *event_init (void);
-void event_base_free (struct event_base *base);
+    void *event_init (void);
+    void event_base_free (struct event_base *base);
 
 #define EVLOOP_ONCE      EVLOOP_ONESHOT
-int event_loop (int);
-int event_loopexit (struct timeval *tv);
-int event_dispatch (void);
+    int event_loop (int);
+    int event_loopexit (struct timeval *tv);
+    int event_dispatch (void);
 
 #define _EVENT_LOG_DEBUG 0
 #define _EVENT_LOG_MSG   1
 #define _EVENT_LOG_WARN  2
 #define _EVENT_LOG_ERR   3
-typedef void (*event_log_cb)(int severity, const char *msg);
-void event_set_log_callback(event_log_cb cb);
+    typedef void (*event_log_cb)(int severity, const char *msg);
+    void event_set_log_callback(event_log_cb cb);
 
-void event_set (struct event *ev, int fd, short events, void (*cb)(int, short, void *), void *arg);
-int event_once (int fd, short events, void (*cb)(int, short, void *), void *arg, struct timeval *tv);
+    void event_set (struct event *ev, int fd, short events, void (*cb)(int, short, void *), void *arg);
+    int event_once (int fd, short events, void (*cb)(int, short, void *), void *arg, struct timeval *tv);
 
-int event_add (struct event *ev, struct timeval *tv);
-int event_del (struct event *ev);
-void event_active (struct event *ev, int res, short ncalls); /* ncalls is being ignored */
+    int event_add (struct event *ev, struct timeval *tv);
+    int event_del (struct event *ev);
+    void event_active (struct event *ev, int res, short ncalls); /* ncalls is being ignored */
 
-int event_pending (struct event *ev, short, struct timeval *tv);
+    int event_pending (struct event *ev, short, struct timeval *tv);
 
-int event_priority_init (int npri);
-int event_priority_set (struct event *ev, int pri);
+    int event_priority_init (int npri);
+    int event_priority_set (struct event *ev, int pri);
 
-struct event_base *event_base_new (void);
-const char *event_base_get_method (const struct event_base *);
-int event_base_set (struct event_base *base, struct event *ev);
-int event_base_loop (struct event_base *base, int);
-int event_base_loopexit (struct event_base *base, struct timeval *tv);
-int event_base_dispatch (struct event_base *base);
-int event_base_once (struct event_base *base, int fd, short events, void (*cb)(int, short, void *), void *arg, struct timeval *tv);
-int event_base_priority_init (struct event_base *base, int fd);
+    struct event_base *event_base_new (void);
+    const char *event_base_get_method (const struct event_base *);
+    int event_base_set (struct event_base *base, struct event *ev);
+    int event_base_loop (struct event_base *base, int);
+    int event_base_loopexit (struct event_base *base, struct timeval *tv);
+    int event_base_dispatch (struct event_base *base);
+    int event_base_once (struct event_base *base, int fd, short events, void (*cb)(int, short, void *), void *arg, struct timeval *tv);
+    int event_base_priority_init (struct event_base *base, int fd);
 
-/* next line is different in the libevent+libev version */
-/*libevent-include*/
+    /* next line is different in the libevent+libev version */
+    /*libevent-include*/
 
 #ifdef __cplusplus
 }

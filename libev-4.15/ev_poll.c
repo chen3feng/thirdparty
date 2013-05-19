@@ -42,45 +42,45 @@
 inline_size void
 pollidx_init (int *base, int count)
 {
-  /* consider using memset (.., -1, ...), which is practically guaranteed
-   * to work on all systems implementing poll */
-  while (count--)
-    *base++ = -1;
+    /* consider using memset (.., -1, ...), which is practically guaranteed
+     * to work on all systems implementing poll */
+    while (count--)
+        *base++ = -1;
 }
 
 static void
 poll_modify (EV_P_ int fd, int oev, int nev)
 {
-  int idx;
+    int idx;
 
-  if (oev == nev)
-    return;
+    if (oev == nev)
+        return;
 
-  array_needsize (int, pollidxs, pollidxmax, fd + 1, pollidx_init);
+    array_needsize (int, pollidxs, pollidxmax, fd + 1, pollidx_init);
 
-  idx = pollidxs [fd];
+    idx = pollidxs [fd];
 
-  if (idx < 0) /* need to allocate a new pollfd */
+    if (idx < 0) /* need to allocate a new pollfd */
     {
-      pollidxs [fd] = idx = pollcnt++;
-      array_needsize (struct pollfd, polls, pollmax, pollcnt, EMPTY2);
-      polls [idx].fd = fd;
+        pollidxs [fd] = idx = pollcnt++;
+        array_needsize (struct pollfd, polls, pollmax, pollcnt, EMPTY2);
+        polls [idx].fd = fd;
     }
 
-  assert (polls [idx].fd == fd);
+    assert (polls [idx].fd == fd);
 
-  if (nev)
-    polls [idx].events =
-        (nev & EV_READ ? POLLIN : 0)
-        | (nev & EV_WRITE ? POLLOUT : 0);
-  else /* remove pollfd */
+    if (nev)
+        polls [idx].events =
+            (nev & EV_READ ? POLLIN : 0)
+            | (nev & EV_WRITE ? POLLOUT : 0);
+    else /* remove pollfd */
     {
-      pollidxs [fd] = -1;
+        pollidxs [fd] = -1;
 
-      if (expect_true (idx < --pollcnt))
+        if (expect_true (idx < --pollcnt))
         {
-          polls [idx] = polls [pollcnt];
-          pollidxs [polls [idx].fd] = idx;
+            polls [idx] = polls [pollcnt];
+            pollidxs [polls [idx].fd] = idx;
         }
     }
 }
@@ -88,61 +88,64 @@ poll_modify (EV_P_ int fd, int oev, int nev)
 static void
 poll_poll (EV_P_ ev_tstamp timeout)
 {
-  struct pollfd *p;
-  int res;
-  
-  EV_RELEASE_CB;
-  res = poll (polls, pollcnt, timeout * 1e3);
-  EV_ACQUIRE_CB;
+    struct pollfd *p;
+    int res;
 
-  if (expect_false (res < 0))
+    EV_RELEASE_CB;
+    res = poll (polls, pollcnt, timeout * 1e3);
+    EV_ACQUIRE_CB;
+
+    if (expect_false (res < 0))
     {
-      if (errno == EBADF)
-        fd_ebadf (EV_A);
-      else if (errno == ENOMEM && !syserr_cb)
-        fd_enomem (EV_A);
-      else if (errno != EINTR)
-        ev_syserr ("(libev) poll");
+        if (errno == EBADF)
+            fd_ebadf (EV_A);
+        else if (errno == ENOMEM && !syserr_cb)
+            fd_enomem (EV_A);
+        else if (errno != EINTR)
+            ev_syserr ("(libev) poll");
     }
-  else
-    for (p = polls; res; ++p)
-      {
-        assert (("libev: poll() returned illegal result, broken BSD kernel?", p < polls + pollcnt));
+    else
+        for (p = polls; res; ++p)
+        {
+            assert (("libev: poll() returned illegal result, broken BSD kernel?", p < polls + pollcnt));
 
-        if (expect_false (p->revents)) /* this expect is debatable */
-          {
-            --res;
+            if (expect_false (p->revents)) /* this expect is debatable */
+            {
+                --res;
 
-            if (expect_false (p->revents & POLLNVAL))
-              fd_kill (EV_A_ p->fd);
-            else
-              fd_event (
-                EV_A_
-                p->fd,
-                (p->revents & (POLLOUT | POLLERR | POLLHUP) ? EV_WRITE : 0)
-                | (p->revents & (POLLIN | POLLERR | POLLHUP) ? EV_READ : 0)
-              );
-          }
-      }
+                if (expect_false (p->revents & POLLNVAL))
+                    fd_kill (EV_A_ p->fd);
+                else
+                    fd_event (
+                        EV_A_
+                        p->fd,
+                        (p->revents & (POLLOUT | POLLERR | POLLHUP) ? EV_WRITE : 0)
+                        | (p->revents & (POLLIN | POLLERR | POLLHUP) ? EV_READ : 0)
+                    );
+            }
+        }
 }
 
 inline_size int
 poll_init (EV_P_ int flags)
 {
-  backend_mintime = 1e-3;
-  backend_modify  = poll_modify;
-  backend_poll    = poll_poll;
+    backend_mintime = 1e-3;
+    backend_modify  = poll_modify;
+    backend_poll    = poll_poll;
 
-  pollidxs = 0; pollidxmax = 0;
-  polls    = 0; pollmax    = 0; pollcnt = 0;
+    pollidxs = 0;
+    pollidxmax = 0;
+    polls    = 0;
+    pollmax    = 0;
+    pollcnt = 0;
 
-  return EVBACKEND_POLL;
+    return EVBACKEND_POLL;
 }
 
 inline_size void
 poll_destroy (EV_P)
 {
-  ev_free (pollidxs);
-  ev_free (polls);
+    ev_free (pollidxs);
+    ev_free (polls);
 }
 
