@@ -44,7 +44,7 @@ VARx(ev_tstamp, mn_now)    /* monotonic clock "now" */
 VARx(ev_tstamp, rtmn_diff) /* difference realtime - monotonic time */
 
 /* for reverse feeding of events */
-VARx(W *, rfeeds)
+VARx(ev_watcher**, rfeeds)
 VARx(int, rfeedmax)
 VARx(int, rfeedcnt)
 
