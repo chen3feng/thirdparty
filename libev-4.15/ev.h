@@ -64,82 +64,35 @@
 # define EV_MINPRI (EV_FEATURE_CONFIG ? -2 : 0)
 # define EV_MAXPRI (EV_FEATURE_CONFIG ? +2 : 0)
 
-# define EV_MULTIPLICITY EV_FEATURE_CONFIG
-
-#ifndef EV_PERIODIC_ENABLE
-# define EV_PERIODIC_ENABLE EV_FEATURE_WATCHERS
-#endif
-
-#ifndef EV_STAT_ENABLE
-# define EV_STAT_ENABLE EV_FEATURE_WATCHERS
-#endif
-
-#ifndef EV_PREPARE_ENABLE
-# define EV_PREPARE_ENABLE EV_FEATURE_WATCHERS
-#endif
-
-#ifndef EV_CHECK_ENABLE
-# define EV_CHECK_ENABLE EV_FEATURE_WATCHERS
-#endif
-
-#ifndef EV_IDLE_ENABLE
-# define EV_IDLE_ENABLE EV_FEATURE_WATCHERS
-#endif
-
-#ifndef EV_FORK_ENABLE
-# define EV_FORK_ENABLE EV_FEATURE_WATCHERS
-#endif
-
-#ifndef EV_CLEANUP_ENABLE
-# define EV_CLEANUP_ENABLE EV_FEATURE_WATCHERS
-#endif
-
-#ifndef EV_SIGNAL_ENABLE
-# define EV_SIGNAL_ENABLE EV_FEATURE_WATCHERS
-#endif
-
-#ifndef EV_CHILD_ENABLE
 # ifdef _WIN32
 #  define EV_CHILD_ENABLE 0
 # else
 #  define EV_CHILD_ENABLE EV_FEATURE_WATCHERS
-#endif
-#endif
-
-#ifndef EV_ASYNC_ENABLE
-# define EV_ASYNC_ENABLE EV_FEATURE_WATCHERS
-#endif
-
-#ifndef EV_EMBED_ENABLE
-# define EV_EMBED_ENABLE EV_FEATURE_WATCHERS
 #endif
 
 #ifndef EV_WALK_ENABLE
 # define EV_WALK_ENABLE 0 /* not yet */
 #endif
 
-    /*****************************************************************************/
+/*****************************************************************************/
 
 #if EV_CHILD_ENABLE && !EV_SIGNAL_ENABLE
 # undef EV_SIGNAL_ENABLE
 # define EV_SIGNAL_ENABLE 1
 #endif
 
-    /*****************************************************************************/
-
+/*****************************************************************************/
 
 # include <signal.h>
 
-#if EV_STAT_ENABLE
 # ifdef _WIN32
 #  include <time.h>
 #  include <sys/types.h>
 # endif
 # include <sys/stat.h>
-#endif
 
 typedef sig_atomic_t volatile EV_ATOMIC_T;
-    typedef double ev_tstamp;
+typedef double ev_tstamp;
 
 /* support multiple event loops? */
 struct ev_loop;
@@ -227,6 +180,7 @@ typedef struct ev_watcher_time : ev_watcher
 {
     ev_tstamp at;     /* private */
 } ev_watcher_time;
+#define ev_periodic_at(ev)                   (+((ev_watcher_time *)(ev))->at)
 
 /* invoked when fd is either EV_READable or EV_WRITEable */
 /* revent EV_READ, EV_WRITE */
@@ -242,9 +196,8 @@ extern void ev_io_stop        (struct ev_loop *loop, ev_io *w) EV_THROW;
 
 /* invoked after a specific time, repeatable (based on monotonic clock) */
 /* revent EV_TIMEOUT */
-typedef struct ev_timer : ev_watcher
+typedef struct ev_timer : ev_watcher_time
 {
-    ev_tstamp at;     /* private */
     ev_tstamp repeat; /* rw */
 } ev_timer;
 #define ev_timer_init(ev,cb,after,repeat)    do { ev_init ((ev), (cb)); ev_timer_set ((ev),(after),(repeat)); } while (0)
@@ -259,9 +212,8 @@ extern ev_tstamp ev_timer_remaining (struct ev_loop *loop, ev_timer *w) EV_THROW
 
 /* invoked at some specific time, possibly repeating at regular intervals (based on UTC) */
 /* revent EV_PERIODIC */
-typedef struct ev_periodic : ev_watcher
+typedef struct ev_periodic : ev_watcher_time
 {
-    ev_tstamp at;     /* private */
     ev_tstamp offset; /* rw */
     ev_tstamp interval; /* rw */
     ev_tstamp (*reschedule_cb)(struct ev_periodic *w, ev_tstamp now) EV_THROW; /* rw */
@@ -556,10 +508,6 @@ extern void ev_invoke_pending (struct ev_loop *loop); /* invoke all pending watc
 extern void ev_suspend (struct ev_loop *loop) EV_THROW;
 extern void ev_resume  (struct ev_loop *loop) EV_THROW;
 
-
-
-#define ev_periodic_at(ev)                   (+((ev_watcher_time *)(ev))->at)
-
 /* stopping (enabling, adding) a watcher does nothing if it is already running */
 /* stopping (disabling, deleting) a watcher does nothing unless its already running */
 /* feeds an event into a watcher as if the event actually occurred */
@@ -573,5 +521,5 @@ extern int  ev_clear_pending  (struct ev_loop *loop, void *w) EV_THROW;
 
 typedef struct ev_loop ev_loop;
 
-#endif
+#endif // EV_H_
 

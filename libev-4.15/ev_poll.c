@@ -56,31 +56,31 @@ poll_modify (struct ev_loop *loop, int fd, int oev, int nev)
     if (oev == nev)
         return;
 
-    array_needsize (int, pollidxs, pollidxmax, fd + 1, pollidx_init);
+    array_needsize (int, loop->pollidxs, loop->pollidxmax, fd + 1, pollidx_init);
 
-    idx = pollidxs [fd];
+    idx = loop->pollidxs [fd];
 
     if (idx < 0) /* need to allocate a new pollfd */
     {
-        pollidxs [fd] = idx = pollcnt++;
-        array_needsize (struct pollfd, polls, pollmax, pollcnt, EMPTY2);
-        polls [idx].fd = fd;
+        loop->pollidxs [fd] = idx = loop->pollcnt++;
+        array_needsize (struct pollfd, loop->polls, loop->pollmax, loop->pollcnt, EMPTY2);
+        loop->polls [idx].fd = fd;
     }
 
-    assert (polls [idx].fd == fd);
+    assert (loop->polls [idx].fd == fd);
 
     if (nev)
-        polls [idx].events =
+        loop->polls [idx].events =
             (nev & EV_READ ? POLLIN : 0)
             | (nev & EV_WRITE ? POLLOUT : 0);
     else /* remove pollfd */
     {
-        pollidxs [fd] = -1;
+        loop->pollidxs [fd] = -1;
 
-        if (expect_true (idx < --pollcnt))
+        if (expect_true (idx < --loop->pollcnt))
         {
-            polls [idx] = polls [pollcnt];
-            pollidxs [polls [idx].fd] = idx;
+            loop->polls [idx] = loop->polls [loop->pollcnt];
+            loop->pollidxs [loop->polls [idx].fd] = idx;
         }
     }
 }
@@ -92,7 +92,7 @@ poll_poll (struct ev_loop *loop, ev_tstamp timeout)
     int res;
 
     EV_RELEASE_CB;
-    res = poll (polls, pollcnt, timeout * 1e3);
+    res = poll (loop->polls, loop->pollcnt, timeout * 1e3);
     EV_ACQUIRE_CB;
 
     if (expect_false (res < 0))
@@ -105,7 +105,7 @@ poll_poll (struct ev_loop *loop, ev_tstamp timeout)
             ev_syserr ("(libev) poll");
     }
     else
-        for (p = polls; res; ++p)
+        for (p = loop->polls; res; ++p)
         {
             assert (("libev: poll() returned illegal result, broken BSD kernel?", p < polls + pollcnt));
 
@@ -129,15 +129,15 @@ poll_poll (struct ev_loop *loop, ev_tstamp timeout)
 inline_size int
 poll_init (struct ev_loop *loop, int flags)
 {
-    backend_mintime = 1e-3;
-    backend_modify  = poll_modify;
-    backend_poll    = poll_poll;
+    loop->backend_mintime = 1e-3;
+    loop->backend_modify  = poll_modify;
+    loop->backend_poll    = poll_poll;
 
-    pollidxs = 0;
-    pollidxmax = 0;
-    polls    = 0;
-    pollmax    = 0;
-    pollcnt = 0;
+    loop->pollidxs = 0;
+    loop->pollidxmax = 0;
+    loop->polls    = 0;
+    loop->pollmax    = 0;
+    loop->pollcnt = 0;
 
     return EVBACKEND_POLL;
 }
@@ -145,7 +145,7 @@ poll_init (struct ev_loop *loop, int flags)
 inline_size void
 poll_destroy (struct ev_loop *loop)
 {
-    ev_free (pollidxs);
-    ev_free (polls);
+    ev_free (loop->pollidxs);
+    ev_free (loop->polls);
 }
 

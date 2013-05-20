@@ -37,167 +37,137 @@
  * either the BSD or the GPL.
  */
 
-#define VARx(type,name) VAR(name, type name)
-
-VARx(ev_tstamp, now_floor) /* last time we refreshed rt_time */
-VARx(ev_tstamp, mn_now)    /* monotonic clock "now" */
-VARx(ev_tstamp, rtmn_diff) /* difference realtime - monotonic time */
+ev_tstamp now_floor; /* last time we refreshed rt_time */
+ev_tstamp mn_now;    /* monotonic clock "now" */
+ev_tstamp rtmn_diff; /* difference realtime - monotonic time */
 
 /* for reverse feeding of events */
-VARx(ev_watcher**, rfeeds)
-VARx(int, rfeedmax)
-VARx(int, rfeedcnt)
+ev_watcher**rfeeds;
+int rfeedmax;
+int rfeedcnt;
 
-VAR (pendings, ANPENDING *pendings [NUMPRI])
-VAR (pendingmax, int pendingmax [NUMPRI])
-VAR (pendingcnt, int pendingcnt [NUMPRI])
-VARx(int, pendingpri) /* highest priority currently pending */
-VARx(ev_prepare, pending_w) /* dummy pending watcher */
+ANPENDING *pendings [NUMPRI];
+int pendingmax [NUMPRI];
+int pendingcnt [NUMPRI];
+int pendingpri; /* highest priority currently pending */
+ev_prepare pending_w; /* dummy pending watcher */
 
-VARx(ev_tstamp, io_blocktime)
-VARx(ev_tstamp, timeout_blocktime)
+ev_tstamp io_blocktime;
+ev_tstamp timeout_blocktime;
 
-VARx(int, backend)
-VARx(int, activecnt) /* total number of active events ("refcount") */
-VARx(EV_ATOMIC_T, loop_done)  /* signal by ev_break */
+int backend;
+int activecnt; /* total number of active events ("refcount") */
+EV_ATOMIC_T loop_done;  /* signal by ev_break */
 
-VARx(int, backend_fd)
-VARx(ev_tstamp, backend_mintime) /* assumed typical timer resolution */
+int backend_fd;
+ev_tstamp backend_mintime; /* assumed typical timer resolution */
 VAR (backend_modify, void (*backend_modify)(struct ev_loop *loop, int fd, int oev, int nev))
 VAR (backend_poll  , void (*backend_poll)(struct ev_loop *loop, ev_tstamp timeout))
 
-VARx(ANFD *, anfds)
-VARx(int, anfdmax)
+ANFD *anfds;
+int anfdmax;
 
-VAR (evpipe, int evpipe [2])
-VARx(ev_io, pipe_w)
-VARx(EV_ATOMIC_T, pipe_write_wanted)
-VARx(EV_ATOMIC_T, pipe_write_skipped)
+int evpipe [2];
+ev_io pipe_w;
+EV_ATOMIC_T pipe_write_wanted;
+EV_ATOMIC_T pipe_write_skipped;
 
-#if !defined(_WIN32) || EV_GENWRAP
-VARx(pid_t, curpid)
-#endif
+pid_t curpid;
 
-VARx(char, postfork)  /* true if we need to recreate kernel state after fork */
+char postfork;  /* true if we need to recreate kernel state after fork */
 
-#if EV_USE_SELECT || EV_GENWRAP
-VARx(void *, vec_ri)
-VARx(void *, vec_ro)
-VARx(void *, vec_wi)
-VARx(void *, vec_wo)
+void *vec_ri;
+void *vec_ro;
+void *vec_wi;
+void *vec_wo;
 #if defined(_WIN32) || EV_GENWRAP
-VARx(void *, vec_eo)
+void *vec_eo;
 #endif
-VARx(int, vec_max)
-#endif
+int vec_max;
 
-#if EV_USE_POLL || EV_GENWRAP
-VARx(struct pollfd *, polls)
-VARx(int, pollmax)
-VARx(int, pollcnt)
-VARx(int *, pollidxs) /* maps fds into structure indices */
-VARx(int, pollidxmax)
-#endif
+struct pollfd *polls;
+int pollmax;
+int pollcnt;
+int *pollidxs; /* maps fds into structure indices */
+int pollidxmax;
 
-#if EV_USE_EPOLL || EV_GENWRAP
-VARx(struct epoll_event *, epoll_events)
-VARx(int, epoll_eventmax)
-VARx(int *, epoll_eperms)
-VARx(int, epoll_epermcnt)
-VARx(int, epoll_epermmax)
-#endif
+struct epoll_event *epoll_events;
+int epoll_eventmax;
+int *epoll_eperms;
+int epoll_epermcnt;
+int epoll_epermmax;
 
 #if EV_USE_KQUEUE || EV_GENWRAP
-VARx(pid_t, kqueue_fd_pid)
-VARx(struct kevent *, kqueue_changes)
-VARx(int, kqueue_changemax)
-VARx(int, kqueue_changecnt)
-VARx(struct kevent *, kqueue_events)
-VARx(int, kqueue_eventmax)
+pid_t kqueue_fd_pid;
+struct kevent *kqueue_changes;
+int kqueue_changemax;
+int kqueue_changecnt;
+struct kevent *kqueue_events;
+int kqueue_eventmax;
 #endif
 
-#if EV_USE_PORT || EV_GENWRAP
-VARx(struct port_event *, port_events)
-VARx(int, port_eventmax)
-#endif
+struct port_event *port_events;
+int port_eventmax;
 
 #if EV_USE_IOCP || EV_GENWRAP
-VARx(HANDLE, iocp)
+HANDLE iocp;
 #endif
 
-VARx(int *, fdchanges)
-VARx(int, fdchangemax)
-VARx(int, fdchangecnt)
+int *fdchanges;
+int fdchangemax;
+int fdchangecnt;
 
-VARx(ANHE *, timers)
-VARx(int, timermax)
-VARx(int, timercnt)
+ANHE *timers;
+int timermax;
+int timercnt;
 
-#if EV_PERIODIC_ENABLE || EV_GENWRAP
-VARx(ANHE *, periodics)
-VARx(int, periodicmax)
-VARx(int, periodiccnt)
-#endif
+ANHE *periodics;
+int periodicmax;
+int periodiccnt;
 
-#if EV_IDLE_ENABLE || EV_GENWRAP
-VAR (idles, ev_idle **idles [NUMPRI])
-VAR (idlemax, int idlemax [NUMPRI])
-VAR (idlecnt, int idlecnt [NUMPRI])
-#endif
-VARx(int, idleall) /* total number */
+ev_idle **idles [NUMPRI];
+int idlemax [NUMPRI];
+int idlecnt [NUMPRI];
+int idleall; /* total number */
 
-VARx(struct ev_prepare **, prepares)
-VARx(int, preparemax)
-VARx(int, preparecnt)
+struct ev_prepare **prepares;
+int preparemax;
+int preparecnt;
 
-VARx(struct ev_check **, checks)
-VARx(int, checkmax)
-VARx(int, checkcnt)
+struct ev_check **checks;
+int checkmax;
+int checkcnt;
 
-#if EV_FORK_ENABLE || EV_GENWRAP
-VARx(struct ev_fork **, forks)
-VARx(int, forkmax)
-VARx(int, forkcnt)
-#endif
+struct ev_fork **forks;
+int forkmax;
+int forkcnt;
 
-#if EV_CLEANUP_ENABLE || EV_GENWRAP
-VARx(struct ev_cleanup **, cleanups)
-VARx(int, cleanupmax)
-VARx(int, cleanupcnt)
-#endif
+struct ev_cleanup **cleanups;
+int cleanupmax;
+int cleanupcnt;
 
-#if EV_ASYNC_ENABLE || EV_GENWRAP
-VARx(EV_ATOMIC_T, async_pending)
-VARx(struct ev_async **, asyncs)
-VARx(int, asyncmax)
-VARx(int, asynccnt)
-#endif
+EV_ATOMIC_T async_pending;
+struct ev_async **asyncs;
+int asyncmax;
+int asynccnt;
 
-#if EV_USE_INOTIFY || EV_GENWRAP
-VARx(int, fs_fd)
-VARx(ev_io, fs_w)
-VARx(char, fs_2625) /* whether we are running in linux 2.6.25 or newer */
-VAR (fs_hash, ANFS fs_hash [EV_INOTIFY_HASHSIZE])
-#endif
+int fs_fd;
+ev_io fs_w;
+char fs_2625; /* whether we are running in linux 2.6.25 or newer */
+ANFS fs_hash [EV_INOTIFY_HASHSIZE];
 
-VARx(EV_ATOMIC_T, sig_pending)
-#if EV_USE_SIGNALFD || EV_GENWRAP
-VARx(int, sigfd)
-VARx(ev_io, sigfd_w)
-VARx(sigset_t, sigfd_set)
-#endif
+EV_ATOMIC_T sig_pending;
+int sigfd;
+ev_io sigfd_w;
+sigset_t sigfd_set;
 
-VARx(unsigned int, origflags) /* original loop flags */
+unsigned int origflags; /* original loop flags */
 
-#if EV_FEATURE_API || EV_GENWRAP
-VARx(unsigned int, loop_count) /* total number of loop iterations/blocks */
-VARx(unsigned int, loop_depth) /* #ev_run enters - #ev_run leaves */
+unsigned int loop_count; /* total number of loop iterations/blocks */
+unsigned int loop_depth; /* #ev_run enters - #ev_run leaves */
 
-VARx(void *, userdata)
-VAR (release_cb, void (*release_cb)(struct ev_loop *loop) EV_THROW)
-VAR (acquire_cb, void (*acquire_cb)(struct ev_loop *loop) EV_THROW)
-VAR (invoke_cb , void (*invoke_cb) (struct ev_loop *loop))
-#endif
-
-#undef VARx
+void *userdata;
+void (*release_cb)(struct ev_loop *loop) EV_THROW;
+void (*acquire_cb)(struct ev_loop *loop) EV_THROW;
+void (*invoke_cb) (struct ev_loop *loop);
 

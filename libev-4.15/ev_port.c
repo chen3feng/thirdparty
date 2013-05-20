@@ -136,7 +136,7 @@ port_poll (struct ev_loop *loop, ev_tstamp timeout)
     }
 }
 
-int inline_size
+inline_size int
 port_init (struct ev_loop *loop, int flags)
 {
     /* Initialize the kernel queue */
