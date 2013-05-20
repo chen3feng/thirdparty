@@ -1566,7 +1566,7 @@ struct ev_loop
 #include "ev_wrap.h"
 
 static struct ev_loop default_loop_struct;
-EV_API_DECL struct ev_loop *ev_default_loop_ptr; /* needs to be initialised to make it a definition despite extern */
+extern struct ev_loop *ev_default_loop_ptr; /* needs to be initialised to make it a definition despite extern */
 struct ev_loop *ev_default_loop_ptr = 0;
 
 #if EV_FEATURE_API
@@ -2655,22 +2655,18 @@ ev_loop_destroy (struct ev_loop *loop)
     if (!loop)
         return;
 
-#if EV_CLEANUP_ENABLE
     /* queue cleanup watchers (and execute them) */
     if (expect_false (cleanupcnt))
     {
         queue_events (loop, (ev_watcher* *)cleanups, cleanupcnt, EV_CLEANUP);
         EV_INVOKE_PENDING;
     }
-#endif
 
-#if EV_CHILD_ENABLE
     if (ev_is_default_loop (loop) && ev_is_active (&childev))
     {
         ev_ref (loop); /* child watcher */
         ev_signal_stop (loop, &childev);
     }
-#endif
 
     if (ev_is_active (&pipe_w))
     {
@@ -2681,15 +2677,11 @@ ev_loop_destroy (struct ev_loop *loop)
         if (evpipe [1] >= 0) EV_WIN32_CLOSE_FD (evpipe [1]);
     }
 
-#if EV_USE_SIGNALFD
     if (ev_is_active (&sigfd_w))
         close (sigfd);
-#endif
 
-#if EV_USE_INOTIFY
     if (fs_fd >= 0)
         close (fs_fd);
-#endif
 
     if (backend_fd >= 0)
         close (backend_fd);
