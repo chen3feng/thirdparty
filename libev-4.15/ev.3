@@ -807,7 +807,7 @@ name, you can call it anytime, but it makes most sense after forking, in
 the child process. You \fImust\fR call it (or use \f(CW\*(C`EVFLAG_FORKCHECK\*(C'\fR) in the
 child before resuming or calling \f(CW\*(C`ev_run\*(C'\fR.
 .Sp
-Again, you \fIhave\fR to call it on \fIany\fR loop that you want to re-use after 
+Again, you \fIhave\fR to call it on \fIany\fR loop that you want to re-use after
 a fork, \fIeven if you do not plan to use the loop in the parent\fR. This is
 because some kernel interfaces *cough* \fIkqueue\fR *cough* do funny things
 during fork.
@@ -2008,7 +2008,7 @@ within the callback:
 \&       }
 \&     else
 \&       {
-\&         // callback was invoked, but there was some recent 
+\&         // callback was invoked, but there was some recent
 \&         // activity. simply restart the timer to time out
 \&         // after "after" seconds, which is the earliest time
 \&         // the timeout can occur.
@@ -3349,7 +3349,7 @@ used).
 \&   struct ev_loop *loop_hi = ev_default_init (0);
 \&   struct ev_loop *loop_lo = 0;
 \&   ev_embed embed;
-\&   
+\&
 \&   // see if there is a chance of getting one that works
 \&   // (remember that a flags value of 0 means autodetection)
 \&   loop_lo = ev_embeddable_backends () & ev_recommended_backends ()
@@ -3375,7 +3375,7 @@ kqueue implementation). Store the kqueue/socket\-only event loop in
 \&   struct ev_loop *loop = ev_default_init (0);
 \&   struct ev_loop *loop_socket = 0;
 \&   ev_embed embed;
-\&   
+\&
 \&   if (ev_supported_backends () & ~ev_recommended_backends () & EVBACKEND_KQUEUE)
 \&     if ((loop_socket = ev_loop_new (EVBACKEND_KQUEUE))
 \&       {
@@ -3999,7 +3999,7 @@ Imagine you have coroutines that you can switch to using a function
 \&\f(CW\*(C`switch_to (coro)\*(C'\fR, that libev runs in a coroutine called \f(CW\*(C`libev_coro\*(C'\fR
 and that due to some magic, the currently active coroutine is stored in a
 global called \f(CW\*(C`current_coro\*(C'\fR. Then you can build your own \*(L"wait for libev
-event\*(R" primitive by changing \f(CW\*(C`EV_CB_DECLARE\*(C'\fR and \f(CW\*(C`EV_CB_INVOKE\*(C'\fR (note
+    event\*(R" primitive by changing \f(CW\*(C`EV_CB_DECLARE\*(C'\fR and \f(CW\*(C`EV_CB_INVOKE\*(C'\fR (note
 the differing \f(CW\*(C`;\*(C'\fR conventions):
 .PP
 .Vb 2
@@ -4236,7 +4236,7 @@ Example: use a functor object as callback.
 \&       ...
 \&     }
 \&   }
-\&    
+\&
 \&   myfunctor f;
 \&
 \&   ev::io w;

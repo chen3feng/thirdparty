@@ -63,8 +63,8 @@ VARx(EV_ATOMIC_T, loop_done)  /* signal by ev_break */
 
 VARx(int, backend_fd)
 VARx(ev_tstamp, backend_mintime) /* assumed typical timer resolution */
-VAR (backend_modify, void (*backend_modify)(EV_P_ int fd, int oev, int nev))
-VAR (backend_poll  , void (*backend_poll)(EV_P_ ev_tstamp timeout))
+VAR (backend_modify, void (*backend_modify)(struct ev_loop *loop, int fd, int oev, int nev))
+VAR (backend_poll  , void (*backend_poll)(struct ev_loop *loop, ev_tstamp timeout))
 
 VARx(ANFD *, anfds)
 VARx(int, anfdmax)
@@ -194,9 +194,9 @@ VARx(unsigned int, loop_count) /* total number of loop iterations/blocks */
 VARx(unsigned int, loop_depth) /* #ev_run enters - #ev_run leaves */
 
 VARx(void *, userdata)
-VAR (release_cb, void (*release_cb)(EV_P) EV_THROW)
-VAR (acquire_cb, void (*acquire_cb)(EV_P) EV_THROW)
-VAR (invoke_cb , void (*invoke_cb) (EV_P))
+VAR (release_cb, void (*release_cb)(struct ev_loop *loop) EV_THROW)
+VAR (acquire_cb, void (*acquire_cb)(struct ev_loop *loop) EV_THROW)
+VAR (invoke_cb , void (*invoke_cb) (struct ev_loop *loop))
 #endif
 
 #undef VARx

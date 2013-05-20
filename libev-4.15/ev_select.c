@@ -68,7 +68,7 @@
 #include <string.h>
 
 static void
-select_modify (EV_P_ int fd, int oev, int nev)
+select_modify (struct ev_loop *loop, int fd, int oev, int nev)
 {
     if (oev == nev)
         return;
@@ -137,7 +137,7 @@ select_modify (EV_P_ int fd, int oev, int nev)
 }
 
 static void
-select_poll (EV_P_ ev_tstamp timeout)
+select_poll (struct ev_loop *loop, ev_tstamp timeout)
 {
     struct timeval tv;
     int res;
@@ -206,9 +206,9 @@ select_poll (EV_P_ ev_tstamp timeout)
 #endif
 
         if (errno == EBADF)
-            fd_ebadf (EV_A);
+            fd_ebadf (loop);
         else if (errno == ENOMEM && !syserr_cb)
-            fd_enomem (EV_A);
+            fd_enomem (loop);
         else if (errno != EINTR)
             ev_syserr ("(libev) select");
 
@@ -237,7 +237,7 @@ select_poll (EV_P_ ev_tstamp timeout)
 #endif
 
                 if (expect_true (events))
-                    fd_event (EV_A_ fd, events);
+                    fd_event (loop, fd, events);
             }
     }
 
@@ -263,7 +263,7 @@ select_poll (EV_P_ ev_tstamp timeout)
                     events |= word_w & mask ? EV_WRITE : 0;
 
                     if (expect_true (events))
-                        fd_event (EV_A_ word * NFDBITS + bit, events);
+                        fd_event (loop, word * NFDBITS + bit, events);
                 }
         }
     }
@@ -272,7 +272,7 @@ select_poll (EV_P_ ev_tstamp timeout)
 }
 
 inline_size int
-select_init (EV_P_ int flags)
+select_init (struct ev_loop *loop, int flags)
 {
     backend_mintime = 1e-6;
     backend_modify  = select_modify;
@@ -303,7 +303,7 @@ select_init (EV_P_ int flags)
 }
 
 inline_size void
-select_destroy (EV_P)
+select_destroy (struct ev_loop *loop)
 {
     ev_free (vec_ri);
     ev_free (vec_ro);

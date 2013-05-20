@@ -49,7 +49,7 @@ pollidx_init (int *base, int count)
 }
 
 static void
-poll_modify (EV_P_ int fd, int oev, int nev)
+poll_modify (struct ev_loop *loop, int fd, int oev, int nev)
 {
     int idx;
 
@@ -86,7 +86,7 @@ poll_modify (EV_P_ int fd, int oev, int nev)
 }
 
 static void
-poll_poll (EV_P_ ev_tstamp timeout)
+poll_poll (struct ev_loop *loop, ev_tstamp timeout)
 {
     struct pollfd *p;
     int res;
@@ -98,9 +98,9 @@ poll_poll (EV_P_ ev_tstamp timeout)
     if (expect_false (res < 0))
     {
         if (errno == EBADF)
-            fd_ebadf (EV_A);
+            fd_ebadf (loop);
         else if (errno == ENOMEM && !syserr_cb)
-            fd_enomem (EV_A);
+            fd_enomem (loop);
         else if (errno != EINTR)
             ev_syserr ("(libev) poll");
     }
@@ -114,10 +114,10 @@ poll_poll (EV_P_ ev_tstamp timeout)
                 --res;
 
                 if (expect_false (p->revents & POLLNVAL))
-                    fd_kill (EV_A_ p->fd);
+                    fd_kill (loop, p->fd);
                 else
                     fd_event (
-                        EV_A_
+                        loop,
                         p->fd,
                         (p->revents & (POLLOUT | POLLERR | POLLHUP) ? EV_WRITE : 0)
                         | (p->revents & (POLLIN | POLLERR | POLLHUP) ? EV_READ : 0)
@@ -127,7 +127,7 @@ poll_poll (EV_P_ ev_tstamp timeout)
 }
 
 inline_size int
-poll_init (EV_P_ int flags)
+poll_init (struct ev_loop *loop, int flags)
 {
     backend_mintime = 1e-3;
     backend_modify  = poll_modify;
@@ -143,7 +143,7 @@ poll_init (EV_P_ int flags)
 }
 
 inline_size void
-poll_destroy (EV_P)
+poll_destroy (struct ev_loop *loop)
 {
     ev_free (pollidxs);
     ev_free (polls);

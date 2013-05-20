@@ -56,7 +56,7 @@
 #include <errno.h>
 
 void inline_speed
-port_associate_and_check (EV_P_ int fd, int ev)
+port_associate_and_check (struct ev_loop *loop, int fd, int ev)
 {
     if (0 >
             port_associate (
@@ -68,14 +68,14 @@ port_associate_and_check (EV_P_ int fd, int ev)
        )
     {
         if (errno == EBADFD)
-            fd_kill (EV_A_ fd);
+            fd_kill (loop, fd);
         else
             ev_syserr ("(libev) port_associate");
     }
 }
 
 static void
-port_modify (EV_P_ int fd, int oev, int nev)
+port_modify (struct ev_loop *loop, int fd, int oev, int nev)
 {
     /* we need to reassociate no matter what, as closes are
      * once more silently being discarded.
@@ -86,11 +86,11 @@ port_modify (EV_P_ int fd, int oev, int nev)
             port_dissociate (backend_fd, PORT_SOURCE_FD, fd);
     }
     else
-        port_associate_and_check (EV_A_ fd, nev);
+        port_associate_and_check (loop, fd, nev);
 }
 
 static void
-port_poll (EV_P_ ev_tstamp timeout)
+port_poll (struct ev_loop *loop, ev_tstamp timeout)
 {
     int res, i;
     struct timespec ts;
@@ -118,13 +118,13 @@ port_poll (EV_P_ ev_tstamp timeout)
             int fd = port_events [i].portev_object;
 
             fd_event (
-                EV_A_
+                loop,
                 fd,
                 (port_events [i].portev_events & (POLLOUT | POLLERR | POLLHUP) ? EV_WRITE : 0)
                 | (port_events [i].portev_events & (POLLIN | POLLERR | POLLHUP) ? EV_READ : 0)
             );
 
-            fd_change (EV_A_ fd, EV__IOFDSET);
+            fd_change (loop, fd, EV__IOFDSET);
         }
     }
 
@@ -137,7 +137,7 @@ port_poll (EV_P_ ev_tstamp timeout)
 }
 
 int inline_size
-port_init (EV_P_ int flags)
+port_init (struct ev_loop *loop, int flags)
 {
     /* Initialize the kernel queue */
     if ((backend_fd = port_create ()) < 0)
@@ -164,13 +164,13 @@ port_init (EV_P_ int flags)
 }
 
 void inline_size
-port_destroy (EV_P)
+port_destroy (struct ev_loop *loop)
 {
     ev_free (port_events);
 }
 
 void inline_size
-port_fork (EV_P)
+port_fork (struct ev_loop *loop)
 {
     close (backend_fd);
 
@@ -180,6 +180,6 @@ port_fork (EV_P)
     fcntl (backend_fd, F_SETFD, FD_CLOEXEC);
 
     /* re-register interest in fds */
-    fd_rearm_all (EV_A);
+    fd_rearm_all (loop);
 }
 

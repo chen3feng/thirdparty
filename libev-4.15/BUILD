@@ -1,6 +1,6 @@
 cc_library(
     name = 'ev',
-    srcs = 'ev.c',
+    srcs = 'ev.cpp',
     extra_cppflags = [
         '-Wno-sign-compare',
         '-Wno-strict-aliasing',

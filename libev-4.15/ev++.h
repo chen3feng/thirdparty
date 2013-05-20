@@ -97,10 +97,6 @@ enum
 
 enum
 {
-#if EV_COMPAT3
-    NONBLOCK = EVLOOP_NONBLOCK,
-    ONESHOT  = EVLOOP_ONESHOT,
-#endif
     NOWAIT   = EVRUN_NOWAIT,
     ONCE     = EVRUN_ONCE
 };
@@ -112,161 +108,117 @@ enum how_t
 };
 
 struct bad_loop
-#if EV_USE_STDEXCEPT
         : std::runtime_error
-#endif
 {
-#if EV_USE_STDEXCEPT
     bad_loop ()
         : std::runtime_error ("libev event loop cannot be initialized, bad value of LIBEV_FLAGS?")
     {
     }
-#endif
 };
-
-#ifdef EV_AX
-#  undef EV_AX
-#endif
-
-#ifdef EV_AX_
-#  undef EV_AX_
-#endif
-
-#if EV_MULTIPLICITY
-#  define EV_AX  raw_loop
-#  define EV_AX_ raw_loop,
-#else
-#  define EV_AX
-#  define EV_AX_
-#endif
 
 struct loop_ref
 {
     loop_ref (EV_P) throw ()
-#if EV_MULTIPLICITY
-        : EV_AX (EV_A)
-#endif
+        : raw_loop (loop)
     {
     }
 
     bool operator == (const loop_ref &other) const throw ()
     {
-#if EV_MULTIPLICITY
-        return EV_AX == other.EV_AX;
-#else
-        return true;
-#endif
+        return raw_loop == other.raw_loop;
     }
 
     bool operator != (const loop_ref &other) const throw ()
     {
-#if EV_MULTIPLICITY
         return ! (*this == other);
-#else
-        return false;
-#endif
     }
 
-#if EV_MULTIPLICITY
     bool operator == (const EV_P) const throw ()
     {
-        return this->EV_AX == EV_A;
+        return this->raw_loop == loop;
     }
 
     bool operator != (const EV_P) const throw ()
     {
-        return (*this == EV_A);
+        return (*this == loop);
     }
 
     operator struct ev_loop * () const throw ()
     {
-        return EV_AX;
+        return raw_loop;
     }
 
     operator const struct ev_loop * () const throw ()
     {
-        return EV_AX;
+        return raw_loop;
     }
 
     bool is_default () const throw ()
     {
-        return EV_AX == ev_default_loop (0);
+        return raw_loop == ev_default_loop (0);
     }
-#endif
-
-#if EV_COMPAT3
-    void loop (int flags = 0)
-    {
-        ev_run (EV_AX_ flags);
-    }
-
-    void unloop (how_t how = ONE) throw ()
-    {
-        ev_break (EV_AX_ how);
-    }
-#endif
 
     void run (int flags = 0)
     {
-        ev_run (EV_AX_ flags);
+        ev_run (raw_loop, flags);
     }
 
     void break_loop (how_t how = ONE) throw ()
     {
-        ev_break (EV_AX_ how);
+        ev_break (raw_loop, how);
     }
 
     void post_fork () throw ()
     {
-        ev_loop_fork (EV_AX);
+        ev_loop_fork (raw_loop);
     }
 
     unsigned int backend () const throw ()
     {
-        return ev_backend (EV_AX);
+        return ev_backend (raw_loop);
     }
 
     tstamp now () const throw ()
     {
-        return ev_now (EV_AX);
+        return ev_now (raw_loop);
     }
 
     void ref () throw ()
     {
-        ev_ref (EV_AX);
+        ev_ref (raw_loop);
     }
 
     void unref () throw ()
     {
-        ev_unref (EV_AX);
+        ev_unref (raw_loop);
     }
 
 #if EV_FEATURE_API
     unsigned int iteration () const throw ()
     {
-        return ev_iteration (EV_AX);
+        return ev_iteration (raw_loop);
     }
 
     unsigned int depth () const throw ()
     {
-        return ev_depth (EV_AX);
+        return ev_depth (raw_loop);
     }
 
     void set_io_collect_interval (tstamp interval) throw ()
     {
-        ev_set_io_collect_interval (EV_AX_ interval);
+        ev_set_io_collect_interval (raw_loop, interval);
     }
 
     void set_timeout_collect_interval (tstamp interval) throw ()
     {
-        ev_set_timeout_collect_interval (EV_AX_ interval);
+        ev_set_timeout_collect_interval (raw_loop, interval);
     }
 #endif
 
     // function callback
     void once (int fd, int events, tstamp timeout, void (*cb)(int, void *), void *arg = 0) throw ()
     {
-        ev_once (EV_AX_ fd, events, timeout, cb, arg);
+        ev_once (raw_loop, fd, events, timeout, cb, arg);
     }
 
     // method callback
@@ -334,35 +286,31 @@ struct loop_ref
 
     void feed_fd_event (int fd, int revents) throw ()
     {
-        ev_feed_fd_event (EV_AX_ fd, revents);
+        ev_feed_fd_event (raw_loop, fd, revents);
     }
 
     void feed_signal_event (int signum) throw ()
     {
-        ev_feed_signal_event (EV_AX_ signum);
+        ev_feed_signal_event (raw_loop, signum);
     }
 
-#if EV_MULTIPLICITY
-    struct ev_loop* EV_AX;
-#endif
-
+    struct ev_loop* raw_loop;
 };
 
-#if EV_MULTIPLICITY
 struct dynamic_loop : loop_ref
 {
 
     dynamic_loop (unsigned int flags = AUTO) throw (bad_loop)
         : loop_ref (ev_loop_new (flags))
     {
-        if (!EV_AX)
+        if (!raw_loop)
             throw bad_loop ();
     }
 
     ~dynamic_loop () throw ()
     {
-        ev_loop_destroy (EV_AX);
-        EV_AX = 0;
+        ev_loop_destroy (raw_loop);
+        raw_loop = 0;
     }
 
 private:
@@ -372,22 +320,13 @@ private:
     dynamic_loop & operator= (const dynamic_loop &);
 
 };
-#endif
 
 struct default_loop : loop_ref
 {
     default_loop (unsigned int flags = AUTO) throw (bad_loop)
-#if EV_MULTIPLICITY
         : loop_ref (ev_default_loop (flags))
-#endif
     {
-        if (
-#if EV_MULTIPLICITY
-            !EV_AX
-#else
-            !ev_default_loop (flags)
-#endif
-        )
+        if (!raw_loop)
             throw bad_loop ();
     }
 
@@ -398,43 +337,22 @@ private:
 
 inline loop_ref get_default_loop () throw ()
 {
-#if EV_MULTIPLICITY
     return ev_default_loop (0);
-#else
-    return loop_ref ();
-#endif
 }
-
-#undef EV_AX
-#undef EV_AX_
-
-#undef EV_PX
-#undef EV_PX_
-#if EV_MULTIPLICITY
-#  define EV_PX  loop_ref EV_A
-#  define EV_PX_ loop_ref EV_A_
-#else
-#  define EV_PX
-#  define EV_PX_
-#endif
 
 template<class ev_watcher, class watcher>
 struct base : ev_watcher
 {
-#if EV_MULTIPLICITY
-    EV_PX;
+    loop_ref loop;
 
     // loop set
     void set (EV_P) throw ()
     {
-        this->EV_A = EV_A;
+        this->loop = loop;
     }
-#endif
 
-    base (EV_PX) throw ()
-#if EV_MULTIPLICITY
-        : EV_A (EV_A)
-#endif
+    base (loop_ref loop) throw ()
+        : loop (loop)
     {
         ev_init (this, 0);
     }
@@ -513,13 +431,13 @@ struct base : ev_watcher
 
     void feed_event (int revents) throw ()
     {
-        ev_feed_event (EV_A_ static_cast<ev_watcher *>(this), revents);
+        ev_feed_event (loop, static_cast<ev_watcher *>(this), revents);
     }
 };
 
 inline tstamp now (EV_P) throw ()
 {
-    return ev_now (EV_A);
+    return ev_now (loop);
 }
 
 inline void delay (tstamp interval) throw ()
@@ -562,18 +480,11 @@ inline void set_syserr_cb (void (*cb)(const char *msg) throw ()) throw ()
     ev_set_syserr_cb (cb);
 }
 
-#if EV_MULTIPLICITY
 #define EV_CONSTRUCT(cppstem,cstem)	                                                \
-      (EV_PX = get_default_loop ()) throw ()                                            \
-        : base<ev_ ## cstem, cppstem> (EV_A)                                            \
+      (loop_ref loop = get_default_loop ()) throw ()                                            \
+        : base<ev_ ## cstem, cppstem> (loop)                                            \
       {                                                                                 \
       }
-#else
-#define EV_CONSTRUCT(cppstem,cstem)                                                 \
-      () throw ()                                                                       \
-      {                                                                                 \
-      }
-#endif
 
 /* using a template here would require quite a bit more lines,
  * so a macro solution was chosen */
@@ -583,12 +494,12 @@ inline void set_syserr_cb (void (*cb)(const char *msg) throw ()) throw ()
   {                                                                                     \
     void start () throw ()                                                              \
     {                                                                                   \
-      ev_ ## cstem ## _start (EV_A_ static_cast<ev_ ## cstem *>(this));                 \
+      ev_ ## cstem ## _start (loop, static_cast<ev_ ## cstem *>(this));                 \
     }                                                                                   \
                                                                                         \
     void stop () throw ()                                                               \
     {                                                                                   \
-      ev_ ## cstem ## _stop (EV_A_ static_cast<ev_ ## cstem *>(this));                  \
+      ev_ ## cstem ## _stop (loop, static_cast<ev_ ## cstem *>(this));                  \
     }                                                                                   \
                                                                                         \
     cppstem EV_CONSTRUCT(cppstem,cstem)                                                 \
@@ -652,12 +563,12 @@ void start (ev_tstamp after, ev_tstamp repeat = 0.) throw ()
 
 void again () throw ()
 {
-    ev_timer_again (EV_A_ static_cast<ev_timer *>(this));
+    ev_timer_again (loop, static_cast<ev_timer *>(this));
 }
 
 ev_tstamp remaining ()
 {
-    return ev_timer_remaining (EV_A_ static_cast<ev_timer *>(this));
+    return ev_timer_remaining (loop, static_cast<ev_timer *>(this));
 }
 EV_END_WATCHER (timer, timer)
 
@@ -679,7 +590,7 @@ void start (ev_tstamp at, ev_tstamp interval = 0.) throw ()
 
 void again () throw ()
 {
-    ev_periodic_again (EV_A_ static_cast<ev_periodic *>(this));
+    ev_periodic_again (loop, static_cast<ev_periodic *>(this));
 }
 EV_END_WATCHER (periodic, periodic)
 #endif
@@ -739,7 +650,7 @@ void start (const char *path, ev_tstamp interval = 0.) throw ()
 
 void update () throw ()
 {
-    ev_stat_stat (EV_A_ static_cast<ev_stat *>(this));
+    ev_stat_stat (loop, static_cast<ev_stat *>(this));
 }
 EV_END_WATCHER (stat, stat)
 #endif
@@ -780,7 +691,7 @@ void start (struct ev_loop *embedded_loop) throw ()
 
 void sweep ()
 {
-    ev_embed_sweep (EV_A_ static_cast<ev_embed *>(this));
+    ev_embed_sweep (loop, static_cast<ev_embed *>(this));
 }
 EV_END_WATCHER (embed, embed)
 #endif
@@ -795,7 +706,7 @@ EV_END_WATCHER (fork, fork)
 EV_BEGIN_WATCHER (async, async)
 void send () throw ()
 {
-    ev_async_send (EV_A_ static_cast<ev_async *>(this));
+    ev_async_send (loop, static_cast<ev_async *>(this));
 }
 
 bool async_pending () throw ()
@@ -805,11 +716,6 @@ bool async_pending () throw ()
 EV_END_WATCHER (async, async)
 #endif
 
-#undef EV_PX
-#undef EV_PX_
-#undef EV_CONSTRUCT
-#undef EV_BEGIN_WATCHER
-#undef EV_END_WATCHER
 }
 
 #endif

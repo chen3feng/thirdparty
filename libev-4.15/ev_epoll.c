@@ -68,7 +68,7 @@
 #define EV_EMASK_EPERM 0x80
 
 static void
-epoll_modify (EV_P_ int fd, int oev, int nev)
+epoll_modify (struct ev_loop *loop, int fd, int oev, int nev)
 {
     struct epoll_event ev;
     unsigned char oldmask;
@@ -90,8 +90,8 @@ epoll_modify (EV_P_ int fd, int oev, int nev)
     /* store the generation counter in the upper 32 bits, the fd in the lower 32 bits */
     ev.data.u64 = (uint64_t)(uint32_t)fd
                   | ((uint64_t)(uint32_t)++anfds [fd].egen << 32);
-    ev.events   = (nev & EV_READ  ? EPOLLIN  : 0)
-                  | (nev & EV_WRITE ? EPOLLOUT : 0);
+    ev.events   = (nev & EV_READ  ? (int)EPOLLIN  : 0)
+                  | (nev & EV_WRITE ? (int)EPOLLOUT : 0);
 
     if (expect_true (!epoll_ctl (backend_fd, oev && oldmask != nev ? EPOLL_CTL_MOD : EPOLL_CTL_ADD, fd, &ev)))
         return;
@@ -131,7 +131,7 @@ epoll_modify (EV_P_ int fd, int oev, int nev)
         return;
     }
 
-    fd_kill (EV_A_ fd);
+    fd_kill (loop, fd);
 
 dec_egen:
     /* we didn't successfully call epoll_ctl, so decrement the generation counter again */
@@ -139,7 +139,7 @@ dec_egen:
 }
 
 static void
-epoll_poll (EV_P_ ev_tstamp timeout)
+epoll_poll (struct ev_loop *loop, ev_tstamp timeout)
 {
     int i;
     int eventcnt;
@@ -196,8 +196,8 @@ epoll_poll (EV_P_ ev_tstamp timeout)
              * partially here, when epoll_ctl returns an error (== a child has the fd
              * but we closed it).
              */
-            ev->events = (want & EV_READ  ? EPOLLIN  : 0)
-                         | (want & EV_WRITE ? EPOLLOUT : 0);
+            ev->events = (want & EV_READ  ? (int)EPOLLIN  : 0)
+                         | (want & EV_WRITE ? (int)EPOLLOUT : 0);
 
             /* pre-2.6.9 kernels require a non-null pointer with EPOLL_CTL_DEL, */
             /* which is fortunately easy to do for us. */
@@ -208,7 +208,7 @@ epoll_poll (EV_P_ ev_tstamp timeout)
             }
         }
 
-        fd_event (EV_A_ fd, got);
+        fd_event (loop, fd, got);
     }
 
     /* if the receive array was full, increase its size */
@@ -226,14 +226,14 @@ epoll_poll (EV_P_ ev_tstamp timeout)
         unsigned char events = anfds [fd].events & (EV_READ | EV_WRITE);
 
         if (anfds [fd].emask & EV_EMASK_EPERM && events)
-            fd_event (EV_A_ fd, events);
+            fd_event (loop, fd, events);
         else
             epoll_eperms [i] = epoll_eperms [--epoll_epermcnt];
     }
 }
 
 inline_size int
-epoll_init (EV_P_ int flags)
+epoll_init (struct ev_loop *loop, int flags)
 {
 #ifdef EPOLL_CLOEXEC
     backend_fd = epoll_create1 (EPOLL_CLOEXEC);
@@ -258,14 +258,14 @@ epoll_init (EV_P_ int flags)
 }
 
 inline_size void
-epoll_destroy (EV_P)
+epoll_destroy (struct ev_loop *loop)
 {
     ev_free (epoll_events);
     array_free (epoll_eperm, EMPTY);
 }
 
 inline_size void
-epoll_fork (EV_P)
+epoll_fork (struct ev_loop *loop)
 {
     close (backend_fd);
 
@@ -274,6 +274,6 @@ epoll_fork (EV_P)
 
     fcntl (backend_fd, F_SETFD, FD_CLOEXEC);
 
-    fd_rearm_all (EV_A);
+    fd_rearm_all (loop);
 }
 

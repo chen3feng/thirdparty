@@ -44,7 +44,7 @@
 #include <errno.h>
 
 void inline_speed
-kqueue_change (EV_P_ int fd, int filter, int flags, int fflags)
+kqueue_change (struct ev_loop *loop, int fd, int filter, int flags, int fflags)
 {
     ++kqueue_changecnt;
     array_needsize (struct kevent, kqueue_changes, kqueue_changemax, kqueue_changecnt, EMPTY2);
@@ -61,29 +61,29 @@ kqueue_change (EV_P_ int fd, int filter, int flags, int fflags)
 #endif
 
 static void
-kqueue_modify (EV_P_ int fd, int oev, int nev)
+kqueue_modify (struct ev_loop *loop, int fd, int oev, int nev)
 {
     if (oev != nev)
     {
         if (oev & EV_READ)
-            kqueue_change (EV_A_ fd, EVFILT_READ , EV_DELETE, 0);
+            kqueue_change (loop, fd, EVFILT_READ , EV_DELETE, 0);
 
         if (oev & EV_WRITE)
-            kqueue_change (EV_A_ fd, EVFILT_WRITE, EV_DELETE, 0);
+            kqueue_change (loop, fd, EVFILT_WRITE, EV_DELETE, 0);
     }
 
     /* to detect close/reopen reliably, we have to re-add */
     /* event requests even when oev == nev */
 
     if (nev & EV_READ)
-        kqueue_change (EV_A_ fd, EVFILT_READ , EV_ADD | EV_ENABLE, NOTE_EOF);
+        kqueue_change (loop, fd, EVFILT_READ , EV_ADD | EV_ENABLE, NOTE_EOF);
 
     if (nev & EV_WRITE)
-        kqueue_change (EV_A_ fd, EVFILT_WRITE, EV_ADD | EV_ENABLE, NOTE_EOF);
+        kqueue_change (loop, fd, EVFILT_WRITE, EV_ADD | EV_ENABLE, NOTE_EOF);
 }
 
 static void
-kqueue_poll (EV_P_ ev_tstamp timeout)
+kqueue_poll (struct ev_loop *loop, ev_tstamp timeout)
 {
     int res, i;
     struct timespec ts;
@@ -122,21 +122,21 @@ kqueue_poll (EV_P_ ev_tstamp timeout)
             if (anfds [fd].events)
             {
                 if (err == ENOENT) /* resubmit changes on ENOENT */
-                    kqueue_modify (EV_A_ fd, 0, anfds [fd].events);
+                    kqueue_modify (loop, fd, 0, anfds [fd].events);
                 else if (err == EBADF) /* on EBADF, we re-check the fd */
                 {
                     if (fd_valid (fd))
-                        kqueue_modify (EV_A_ fd, 0, anfds [fd].events);
+                        kqueue_modify (loop, fd, 0, anfds [fd].events);
                     else
-                        fd_kill (EV_A_ fd);
+                        fd_kill (loop, fd);
                 }
                 else /* on all other errors, we error out on the fd */
-                    fd_kill (EV_A_ fd);
+                    fd_kill (loop, fd);
             }
         }
         else
             fd_event (
-                EV_A_
+                loop,
                 fd,
                 kqueue_events [i].filter == EVFILT_READ ? EV_READ
                 : kqueue_events [i].filter == EVFILT_WRITE ? EV_WRITE
@@ -153,7 +153,7 @@ kqueue_poll (EV_P_ ev_tstamp timeout)
 }
 
 int inline_size
-kqueue_init (EV_P_ int flags)
+kqueue_init (struct ev_loop *loop, int flags)
 {
     /* initialize the kernel queue */
     kqueue_fd_pid = getpid ();
@@ -177,14 +177,14 @@ kqueue_init (EV_P_ int flags)
 }
 
 void inline_size
-kqueue_destroy (EV_P)
+kqueue_destroy (struct ev_loop *loop)
 {
     ev_free (kqueue_events);
     ev_free (kqueue_changes);
 }
 
 void inline_size
-kqueue_fork (EV_P)
+kqueue_fork (struct ev_loop *loop)
 {
     /* some BSD kernels don't just destroy the kqueue itself,
      * but also close the fd, which isn't documented, and
@@ -206,7 +206,7 @@ kqueue_fork (EV_P)
     fcntl (backend_fd, F_SETFD, FD_CLOEXEC);
 
     /* re-register interest in fds */
-    fd_rearm_all (EV_A);
+    fd_rearm_all (loop);
 }
 
 /* sys/event.h defines EV_ERROR */
