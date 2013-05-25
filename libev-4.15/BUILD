@@ -8,3 +8,13 @@ cc_library(
         '-Wno-unused-result',
     ],
 )
+
+cc_library(
+    name = 'event',
+    srcs = 'event.c',
+    extra_cppflags = [
+        '-Wno-strict-aliasing',
+        '-Wno-float-equal',
+    ],
+    deps = ':ev',
+)
