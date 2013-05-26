@@ -6,6 +6,7 @@ cc_library(
         '-Wno-strict-aliasing',
         '-Wno-float-equal',
         '-Wno-unused-result',
+        '-Wno-unused-value',
     ],
 )
 
