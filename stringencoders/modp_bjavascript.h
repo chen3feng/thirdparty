@@ -1,1 +1,1 @@
-#include "thirdparty/stringencoders-svn-355/modp_bjavascript.h"
+#include "thirdparty/stringencoders-svn-355/src/modp_bjavascript.h"

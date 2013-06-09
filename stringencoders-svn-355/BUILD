@@ -12,6 +12,8 @@ cc_library(
         'src/modp_b16.c',
         'src/modp_b2.c',
         'src/modp_b64.c',
+        'src/modp_b64r.c',
+        'src/modp_b64w.c',
         'src/modp_b85.c',
         'src/modp_bjavascript.c',
         'src/modp_burl.c',
