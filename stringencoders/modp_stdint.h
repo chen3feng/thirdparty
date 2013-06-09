@@ -1,1 +1,1 @@
-#include "thirdparty/stringencoders-3.10.3/modp_stdint.h"
+#include "thirdparty/stringencoders-svn-355/modp_stdint.h"

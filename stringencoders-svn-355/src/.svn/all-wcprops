@@ -1,0 +1,227 @@
+K 25
+svn:wc:ra_dav:version-url
+V 27
+/svn/!svn/ver/355/trunk/src
+END
+modp_b2.c
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/!svn/ver/293/trunk/src/modp_b2.c
+END
+modp_numtoa.c
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/330/trunk/src/modp_numtoa.c
+END
+arraytoc.c
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/293/trunk/src/arraytoc.c
+END
+modp_xml.h
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/354/trunk/src/modp_xml.h
+END
+modp_b2.h
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/!svn/ver/343/trunk/src/modp_b2.h
+END
+modp_numtoa.h
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/343/trunk/src/modp_numtoa.h
+END
+modp_bjavascript.c
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/280/trunk/src/modp_bjavascript.c
+END
+arraytoc.h
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/293/trunk/src/arraytoc.h
+END
+modp_bjavascript.h
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/343/trunk/src/modp_bjavascript.h
+END
+modp_b16_gen.c
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/293/trunk/src/modp_b16_gen.c
+END
+extern_c_end.h
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/343/trunk/src/extern_c_end.h
+END
+modp_mainpage.h
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/343/trunk/src/modp_mainpage.h
+END
+modp_ascii.c
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/343/trunk/src/modp_ascii.c
+END
+modp_b64.c
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/298/trunk/src/modp_b64.c
+END
+modp_b2_gen.c
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/293/trunk/src/modp_b2_gen.c
+END
+modp_ascii.h
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/343/trunk/src/modp_ascii.h
+END
+modp_b85.c
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/293/trunk/src/modp_b85.c
+END
+modp_b64.h
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/343/trunk/src/modp_b64.h
+END
+modp_bjavascript_gen.c
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/293/trunk/src/modp_bjavascript_gen.c
+END
+extern_c_begin.h
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/343/trunk/src/extern_c_begin.h
+END
+modp_b85.h
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/343/trunk/src/modp_b85.h
+END
+modp_burl.c
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/343/trunk/src/modp_burl.c
+END
+modp_qsiter.c
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/351/trunk/src/modp_qsiter.c
+END
+modp_burl.h
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/343/trunk/src/modp_burl.h
+END
+modp_stdint.h
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/343/trunk/src/modp_stdint.h
+END
+modp_qsiter.h
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/343/trunk/src/modp_qsiter.h
+END
+modp_ascii_gen.c
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/293/trunk/src/modp_ascii_gen.c
+END
+modp_b64r.h
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/349/trunk/src/modp_b64r.h
+END
+modp_b64_gen.c
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/293/trunk/src/modp_b64_gen.c
+END
+modp_b64w.h
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/343/trunk/src/modp_b64w.h
+END
+modp_b85_gen.c
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/293/trunk/src/modp_b85_gen.c
+END
+modp_b16.c
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/293/trunk/src/modp_b16.c
+END
+modp_b36.c
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/352/trunk/src/modp_b36.c
+END
+modp_burl_gen.c
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/293/trunk/src/modp_burl_gen.c
+END
+modp_b16.h
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/343/trunk/src/modp_b16.h
+END
+modp_b36.h
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/352/trunk/src/modp_b36.h
+END
+modp_xml.c
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/355/trunk/src/modp_xml.c
+END

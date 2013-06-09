@@ -1,1 +1,1 @@
-#include "thirdparty/stringencoders-3.10.3/modp_b85_data.h"
+#include "thirdparty/stringencoders-svn-355/modp_b85_data.h"

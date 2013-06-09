@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/!svn/ver/231/trunk/javascript
+END
+urlparse.js
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/231/trunk/javascript/urlparse.js
+END
+qunit.js
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/210/trunk/javascript/qunit.js
+END
+urlparse-test.html
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/221/trunk/javascript/urlparse-test.html
+END
+base64.js
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/230/trunk/javascript/base64.js
+END
+base64-test.html
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/213/trunk/javascript/base64-test.html
+END
+base64-speed.html
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/209/trunk/javascript/base64-speed.html
+END
+base64.html
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/208/trunk/javascript/base64.html
+END
+qunit.css
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/210/trunk/javascript/qunit.css
+END
