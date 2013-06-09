@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 23
+/svn/!svn/ver/355/trunk
+END
+AUTHORS
+K 25
+svn:wc:ra_dav:version-url
+V 29
+/svn/!svn/ver/2/trunk/AUTHORS
+END
+bootstrap.sh
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/248/trunk/bootstrap.sh
+END
+INSTALL
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/svn/!svn/ver/20/trunk/INSTALL
+END
+makerelease.sh
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/234/trunk/makerelease.sh
+END
+ChangeLog
+K 25
+svn:wc:ra_dav:version-url
+V 33
+/svn/!svn/ver/349/trunk/ChangeLog
+END
+COPYING
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/100/trunk/COPYING
+END
+Makefile.am
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/!svn/ver/353/trunk/Makefile.am
+END
+NEWS
+K 25
+svn:wc:ra_dav:version-url
+V 26
+/svn/!svn/ver/2/trunk/NEWS
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 28
+/svn/!svn/ver/2/trunk/README
+END
+Doxyfile
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/svn/!svn/ver/342/trunk/Doxyfile
+END
+configure.ac
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/352/trunk/configure.ac
+END

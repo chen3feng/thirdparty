@@ -1,1 +1,1 @@
-#include "thirdparty/stringencoders-3.10.3/modp_ascii.h"
+#include "thirdparty/stringencoders-svn-355/src/modp_ascii.h"
