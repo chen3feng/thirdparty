@@ -22,9 +22,12 @@ struct Benchmark {
   Benchmark* ThreadRange(int lo, int hi) { threadlo = lo; threadhi = hi; return this; }
 };
 
-static int nbenchmarks;
-static Benchmark* benchmarks[10000];
+void RunBench(testing::Benchmark* b, int nthread, int siz);
+
 }  // namespace testing
+
+extern int nbenchmarks;
+extern testing::Benchmark* benchmarks[10000];
 
 void SetBenchmarkBytesProcessed(long long);
 void StopBenchmarkTiming();
@@ -32,7 +35,7 @@ void StartBenchmarkTiming();
 void BenchmarkMemoryUsage();
 void SetBenchmarkItemsProcessed(int);
 
-int NumCPUs();
+extern int NumCPUs();
 
 #define BENCHMARK(f) \
 	::testing::Benchmark* _benchmark_##f = (new ::testing::Benchmark(#f, f))
@@ -41,6 +44,5 @@ int NumCPUs();
 	::testing::Benchmark* _benchmark_##f = \
 	(new ::testing::Benchmark(#f, f, lo, hi))
 
-void RunBench(testing::Benchmark* b, int nthread, int siz);
 
 #endif  // RE2_UTIL_BENCHMARK_H__
