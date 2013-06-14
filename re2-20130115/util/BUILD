@@ -90,6 +90,7 @@ cc_library(name = 'benchmark',
            deps = [
             '//thirdparty/gflags:gflags',
             '//thirdparty/glog:glog',
+            '//thirdparty/perftools:tcmalloc_and_profiler',
             ],
            )
 
