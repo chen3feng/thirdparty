@@ -1,0 +1,23 @@
+K 10
+svn:ignore
+V 181
+*~
+mt/*
+configure
+configure.in
+autom4te.cache
+ltmain.sh
+config.h.in
+aclocal.m4
+svn-prop.tmp
+depcomp
+missing
+install-sh
+mkinstalldirs
+configure
+config.sub
+config.guess
+compile
+*.tmp
+
+END
