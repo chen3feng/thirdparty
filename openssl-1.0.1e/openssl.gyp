@@ -918,6 +918,7 @@
       ],
       'include_dirs': [
         '.',
+        '<(blade_root)',
         'openssl',
         'openssl/crypto',
         'openssl/crypto/asn1',
