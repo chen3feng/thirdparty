@@ -1,3 +1,101 @@
+crypto_srcs = [
+    'openssl/crypto/aes/aes_cbc.c',
+    'openssl/crypto/aes/aes_core.c',
+    'openssl/crypto/bf/bf_enc.c',
+    'openssl/crypto/bn/bn_asm.c',
+    'openssl/crypto/cast/c_enc.c',
+    'openssl/crypto/camellia/camellia.c',
+    'openssl/crypto/camellia/cmll_cbc.c',
+    'openssl/crypto/camellia/cmll_misc.c',
+    'openssl/crypto/des/des_enc.c',
+    'openssl/crypto/des/fcrypt_b.c',
+    'openssl/crypto/mem_clr.c',
+    'openssl/crypto/rc4/rc4_enc.c',
+    'openssl/crypto/rc4/rc4_skey.c',
+    'openssl/crypto/whrlpool/wp_block.c'
+]
+
+crypto_defs = [
+]
+
+if build_target.arch == 'i386':
+    crypto_srcs = [
+        'asm/x86-elf-gas/aes/aes-586.s',
+        'asm/x86-elf-gas/aes/aesni-x86.s',
+        'asm/x86-elf-gas/bf/bf-686.s',
+        'asm/x86-elf-gas/bn/x86-mont.s',
+        'asm/x86-elf-gas/bn/x86.s',
+        'asm/x86-elf-gas/camellia/cmll-x86.s',
+        'asm/x86-elf-gas/cast/cast-586.s',
+        'asm/x86-elf-gas/des/crypt586.s',
+        'asm/x86-elf-gas/des/des-586.s',
+        'asm/x86-elf-gas/md5/md5-586.s',
+        'asm/x86-elf-gas/rc4/rc4-586.s',
+        'asm/x86-elf-gas/rc5/rc5-586.s',
+        'asm/x86-elf-gas/ripemd/rmd-586.s',
+        'asm/x86-elf-gas/sha/sha1-586.s',
+        'asm/x86-elf-gas/sha/sha256-586.s',
+        'asm/x86-elf-gas/sha/sha512-586.s',
+        'asm/x86-elf-gas/whrlpool/wp-mmx.s',
+        'asm/x86-elf-gas/x86cpuid.s',
+        'openssl/crypto/whrlpool/wp_block.c'
+    ]
+    crypto_defs = [
+        # Enable asm
+        'AES_ASM',
+        'BF_ASM',
+        'BNCO_ASM',
+        'BN_ASM',
+        'CPUID_ASM',
+        'DES_ASM',
+        'LIB_BN_ASM',
+        'OPENSSL_BN_ASM',
+        'OPENSSL_CPUID_OBJ',
+        'RIP_ASM',
+        'WHIRLPOOL_ASM',
+        'WP_ASM',
+    ]
+
+if build_target.arch == 'x86_64':
+    crypto_srcs = [
+        'asm/x64-elf-gas/aes/aes-x86_64.s',
+        'asm/x64-elf-gas/aes/aesni-x86_64.s',
+        'asm/x64-elf-gas/aes/aesni-sha1-x86_64.s',
+        'asm/x64-elf-gas/bn/modexp512-x86_64.s',
+        'asm/x64-elf-gas/bn/x86_64-mont.s',
+        'asm/x64-elf-gas/camellia/cmll-x86_64.s',
+        'asm/x64-elf-gas/md5/md5-x86_64.s',
+        'asm/x64-elf-gas/rc4/rc4-x86_64.s',
+        'asm/x64-elf-gas/rc4/rc4-md5-x86_64.s',
+        'asm/x64-elf-gas/sha/sha1-x86_64.s',
+        'asm/x64-elf-gas/sha/sha512-x86_64.s',
+        'asm/x64-elf-gas/whrlpool/wp-x86_64.s',
+        'asm/x64-elf-gas/x86_64cpuid.s',
+        # Non-generated asm
+        'openssl/crypto/bn/asm/x86_64-gcc.c',
+        # No asm available
+        'openssl/crypto/bf/bf_enc.c',
+        'openssl/crypto/cast/c_enc.c',
+        'openssl/crypto/camellia/cmll_misc.c',
+        'openssl/crypto/des/des_enc.c',
+        'openssl/crypto/des/fcrypt_b.c'
+    ]
+    crypto_defs = [
+        # Enable asm
+        'AES_ASM',
+        'BF_ASM',
+        'BNCO_ASM',
+        'BN_ASM',
+        'CPUID_ASM',
+        'DES_ASM',
+        'LIB_BN_ASM',
+        'OPENSSL_BN_ASM',
+        'OPENSSL_CPUID_OBJ',
+        'RIP_ASM',
+        'WHIRLPOOL_ASM',
+        'WP_ASM',
+    ]
+
 cc_library(
     name = 'openssl',
     defs = [
@@ -12,27 +110,13 @@ cc_library(
         # seeing this extension.
         'OPENSSL_NO_HEARTBEATS',
 
-        # Enable asm
-        'AES_ASM',
-        'BF_ASM',
-        'BNCO_ASM',
-        'BN_ASM',
-        'CPUID_ASM',
-        'DES_ASM',
-        'LIB_BN_ASM',
-        'OPENSSL_BN_ASM',
-        'OPENSSL_CPUID_OBJ',
-        'RIP_ASM',
-        'WHIRLPOOL_ASM',
-        'WP_ASM',
-
         # ENGINESDIR must be defined if OPENSSLDIR is.
         'ENGINESDIR=\\"/dev/null\\"',
         # Set to ubuntu default path for convenience. If necessary, override
         # this at runtime with the SSL_CERT_DIR environment variable.
         'OPENSSLDIR=\\"/etc/ssl\\"',
         'TERMIOS',
-    ],
+    ] + crypto_defs,
     incs = [
         '.',
         'openssl',
@@ -671,28 +755,6 @@ cc_library(
         'openssl/engines/e_nuron.c',
         'openssl/engines/e_sureware.c',
         'openssl/engines/e_ubsec.c',
-
-        'asm/x64-elf-gas/aes/aes-x86_64.s',
-        'asm/x64-elf-gas/aes/aesni-x86_64.s',
-        'asm/x64-elf-gas/aes/aesni-sha1-x86_64.s',
-        'asm/x64-elf-gas/bn/modexp512-x86_64.s',
-        'asm/x64-elf-gas/bn/x86_64-mont.s',
-        'asm/x64-elf-gas/camellia/cmll-x86_64.s',
-        'asm/x64-elf-gas/md5/md5-x86_64.s',
-        'asm/x64-elf-gas/rc4/rc4-x86_64.s',
-        'asm/x64-elf-gas/rc4/rc4-md5-x86_64.s',
-        'asm/x64-elf-gas/sha/sha1-x86_64.s',
-        'asm/x64-elf-gas/sha/sha512-x86_64.s',
-        'asm/x64-elf-gas/whrlpool/wp-x86_64.s',
-        'asm/x64-elf-gas/x86_64cpuid.s',
-        # Non-generated asm
-        'openssl/crypto/bn/asm/x86_64-gcc.c',
-        # No asm available
-        'openssl/crypto/bf/bf_enc.c',
-        'openssl/crypto/cast/c_enc.c',
-        'openssl/crypto/camellia/cmll_misc.c',
-        'openssl/crypto/des/des_enc.c',
-        'openssl/crypto/des/fcrypt_b.c'
-    ],
+    ] + crypto_srcs,
     warning = 'no'
 )
