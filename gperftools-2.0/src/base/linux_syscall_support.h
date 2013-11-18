@@ -250,7 +250,7 @@ struct siginfo;
 struct kernel_old_sigaction {
   union {
     void             (*sa_handler_)(int);
-    void             (*sa_sigaction_)(int, struct siginfo *, void *);
+    void             (*sa_sigaction_)(int, siginfo_t *, void *);
   };
   unsigned long      sa_mask;
   unsigned long      sa_flags;
@@ -287,13 +287,13 @@ struct kernel_sigaction {
   unsigned long      sa_flags;
   union {
     void             (*sa_handler_)(int);
-    void             (*sa_sigaction_)(int, struct siginfo *, void *);
+    void             (*sa_sigaction_)(int, siginfo_t *, void *);
   };
   struct kernel_sigset_t sa_mask;
 #else
   union {
     void             (*sa_handler_)(int);
-    void             (*sa_sigaction_)(int, struct siginfo *, void *);
+    void             (*sa_sigaction_)(int, siginfo_t *, void *);
   };
   unsigned long      sa_flags;
   void               (*sa_restorer)(void);
