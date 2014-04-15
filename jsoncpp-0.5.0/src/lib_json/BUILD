@@ -3,5 +3,6 @@ cc_library(name = 'jsoncpp',
         'json_reader.cpp',
         'json_value.cpp',
         'json_writer.cpp'
-    ]
+    ],
+    extra_cppflags = ['-Wno-float-equal'],
 )
