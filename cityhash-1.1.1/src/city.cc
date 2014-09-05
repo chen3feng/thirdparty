@@ -28,7 +28,7 @@
 // compromising on hash quality.
 
 #include "config.h"
-#include <city.h>
+#include "city.h"
 
 #include <algorithm>
 #include <string.h>  // for memcpy and memset
@@ -59,6 +59,15 @@ static uint32 UNALIGNED_LOAD32(const char *p) {
 #include <libkern/OSByteOrder.h>
 #define bswap_32(x) OSSwapInt32(x)
 #define bswap_64(x) OSSwapInt64(x)
+
+#elif defined(__NetBSD__)
+
+#include <sys/types.h>
+#include <machine/bswap.h>
+#if defined(__BSWAP_RENAME) && !defined(__bswap_32)
+#define bswap_32(x) bswap32(x)
+#define bswap_64(x) bswap64(x)
+#endif
 
 #else
 
@@ -144,7 +153,8 @@ static uint32 Hash32Len0to4(const char *s, size_t len) {
   uint32 b = 0;
   uint32 c = 9;
   for (size_t i = 0; i < len; i++) {
-    b = b * c1 + s[i];
+    signed char v = s[i];
+    b = b * c1 + v;
     c ^= b;
   }
   return fmix(Mur(b, Mur(len, c)));
@@ -485,7 +495,7 @@ uint128 CityHash128(const char *s, size_t len) {
 }
 
 #ifdef __SSE4_2__
-#include <citycrc.h>
+#include "citycrc.h"
 #include <nmmintrin.h>
 
 // Requires len >= 240.
