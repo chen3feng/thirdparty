@@ -21,6 +21,7 @@ cc_library(
         'src/modp_qsiter.c',
         'src/modp_xml.c'
     ],
+    extra_cppflags = '-Wno-float-equal'
 )
 
 cc_binary(
