@@ -1,7 +1,7 @@
-#include "glog/logging.h"
-#include "glog/raw_logging.h"
+#include "thirdparty/glog/logging.h"
+#include "thirdparty/glog/raw_logging.h"
 
-#include "gtest/gtest.h"
+#include "thirdparty/gtest/gtest.h"
 
 TEST(GLog, Test)
 {
