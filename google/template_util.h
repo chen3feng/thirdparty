@@ -31,4 +31,4 @@
 // directory.  This forwarding file is provided only for backwards
 // compatibility.  Use <sparsehash/*> in all new code.
 
-#include <sparsehash/internal/sparsehashtable.h>
+#include <sparsehash/template_util.h>
