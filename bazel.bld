@@ -1,0 +1,94 @@
+_blade_cc_binary = cc_binary
+_blade_cc_library = cc_library
+_blade_cc_test = cc_test
+_blade_glob = glob
+
+
+def load(*args):
+    pass
+
+def package(default_visibility=[], features=[]):
+    pass
+
+
+def licenses(licenses=[]):  # Apache 2.0
+    pass
+
+
+def select(cond):
+    return cond.get("//conditions:default", [])
+
+def filegroup(name, srcs=[]):
+    pass
+
+def config_setting(*args, **kwargs):
+    pass
+
+def glob(*args, **kwargs):
+    if 'exclude' in kwargs:
+        exclude = kwargs['exclude']
+        del kwargs['exclude']
+        kwargs['excludes'] = exclude
+    return _blade_glob(*args, **kwargs)
+
+def _unify_tag(tag):
+    if ':' not in tag:
+        return tag + ':' + tag.split('/')[-1]
+    return tag
+
+
+def _unify_tags(tags):
+    r = []
+    for tag in tags:
+        if tag.startswith('@'):
+            if tag == "@com_github_google_benchmark//:benchmark_main":
+                r.append('//thirdparty/benchmark:benchmark_main')
+        else:
+            r.append(_unify_tag(tag))
+
+    return r
+
+
+def cc_test(name, srcs=[], hdrs=[],
+            copts=[], linkopts=[], deps=[],
+            linkstatic=0, shard_count=1,
+            args=[], data=[],
+            size='', tags=[], visibility=[]):
+    _blade_cc_test(name=name, srcs=srcs,
+                   deps=_unify_tags(deps),
+                   extra_cppflags=copts, testdata=data,
+                   extra_linkflags=linkopts)
+
+
+def cc_library(name, srcs=[], hdrs=[],
+               copts=[], linkopts=[], deps=[],
+               textual_hdrs=[],
+               strip_include_prefix = '',
+               defines=[], linkstatic=0,
+               alwayslink=0, testonly=0,
+               visibility=[]):
+    _blade_cc_library(name=name, srcs=srcs,
+                      defs=defines,
+                      deps=_unify_tags(deps),
+                      extra_cppflags=copts,
+                      extra_linkflags=linkopts,
+                      export_incs=[strip_include_prefix] if strip_include_prefix else [],
+                      link_all_symbols=alwayslink)
+
+
+def cc_binary(name, srcs=[], hdrs=[],
+              copts=[], linkopts=[], deps=[],
+              defines=[],
+              testonly=0,
+              visibility=[]):
+    _blade_cc_binary(name=name, srcs=srcs,
+                     defs=defines,
+                     deps=_unify_tags(deps),
+                     extra_cppflags=copts,
+                     extra_linkflags=linkopts)
+
+
+ABSL_EXCEPTIONS_FLAG=[]
+ABSL_DEFAULT_COPTS=['-Wno-sign-compare', '-Wno-float-equal']
+ABSL_TEST_COPTS=ABSL_DEFAULT_COPTS
+ABSL_EXCEPTIONS_FLAG_LINKOPTS=[]
