@@ -1,0 +1,99 @@
+import os
+
+from blade import blade
+
+def _package_path(filename):
+    for ext in ('tar.gz', 'tar.bz2', 'tar.xz', 'tgz', 'tbz', 'txz', 'tar', 'zip'):
+        if filename.endswith('.' + ext):
+            return filename[0:-(len(ext)+1)]
+    return None
+
+
+def _with_package_install_dir(dep):
+    build_dir = blade.get_build_path()
+    rel_dir, name = dep.split(':')
+    r = os.path.join(build_dir, rel_dir[2:], name + '_install')
+    print r
+    return name, r
+
+
+def expand_with_packages(deps):
+    result = {}
+    for dep in deps:
+        name, install_dir = _with_package_install_dir(dep)
+        result[name] = install_dir
+    return result
+
+
+def _configure_command(install_dir, with_packages):
+    workspace = blade.get_root_dir()
+    cmd = './configure --prefix=' + install_dir
+    if with_packages:
+        for name, dir in expand_with_packages(with_packages).items():
+            cmd += ' '
+            cmd += '--with-%s=%s' % (name, os.path.join(workspace, dir))
+    return cmd
+
+
+def autotools_cc_library(name,
+                         package,
+                         enable_static=True,
+                         enable_shared=False,
+                         with_packages=[],
+                         deps=[],
+                         hdrs=[],
+                         strip_include_prefix='',
+                         ):
+    workspace = blade.get_root_dir()
+    build_dir = blade.get_build_path()
+    source_dir = blade.get_current_source_path()
+    target_dir = os.path.join(build_dir, source_dir)
+
+    package_dir = _package_path(package)
+    full_package_dir = os.path.join(target_dir, package_dir)
+    is_zip = package.endswith('.zip')
+    install_dir = name + '_install'
+    abs_install_dir = os.path.join(workspace, target_dir, install_dir)
+
+    build_cmd=[]
+    build_cmd.append('rm -fr ' + full_package_dir)
+    if is_zip:
+        build_cmd.append('unzip -d %s $FIRST_SRC' % target_dir)
+    else:
+        build_cmd.append('tar -xf $FIRST_SRC -C %s' % target_dir)
+    build_cmd.append('cd ' + full_package_dir)
+    build_cmd.append(_configure_command(abs_install_dir, with_packages))
+    build_cmd.append('make -j8')
+    build_cmd.append('make install')
+    build_cmd.append('cd ..')
+    build_cmd.append('for f in %s/include/*; do ln -sf $$f .; done' % install_dir)
+
+    build_cmd = ' && '.join(build_cmd)
+
+    outs=[]
+    if enable_static:
+        outs.append(os.path.join(install_dir, 'lib', 'lib%s.a' % name))
+    if enable_shared:
+        outs.append(os.path.join(install_dir, 'lib', 'lib%s.so' % name))
+
+    package_build_name = name + '_build'
+    gen_rule(
+        name=package_build_name,
+        srcs=[package],
+        cmd=build_cmd,
+        outs=outs,
+        deps=[p + '_build' for p in with_packages]
+    )
+
+    full_install_dir = os.path.join(build_dir, source_dir, install_dir)
+    full_lib_dir = os.path.join(full_install_dir, 'lib')
+    full_include_dir = os.path.join(full_install_dir, 'include')
+
+    cc_library(
+        name=name,
+        prebuilt = True,
+        prebuilt_libpath_pattern = '//' + full_lib_dir,
+        export_incs = ['//' + full_include_dir],
+        deps = [':' + package_build_name] + deps,
+    )
+
