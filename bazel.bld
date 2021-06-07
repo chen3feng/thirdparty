@@ -25,10 +25,6 @@ def config_setting(*args, **kwargs):
     pass
 
 def glob(*args, **kwargs):
-    if 'exclude' in kwargs:
-        exclude = kwargs['exclude']
-        del kwargs['exclude']
-        kwargs['excludes'] = exclude
     return _blade_glob(*args, **kwargs)
 
 def _unify_tag(tag):
