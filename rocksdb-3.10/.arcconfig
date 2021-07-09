@@ -1,0 +1,15 @@
+{
+  "project_id" : "rocksdb",
+  "conduit_uri" : "https://reviews.facebook.net/",
+  "copyright_holder" : "Facebook",
+  "load" : [
+    "linters"
+  ],
+  "lint.engine" : "FacebookFbcodeLintEngine",
+  "lint.engine.single.linter" : "FbcodeCppLinter",
+  "base" : "git:HEAD^, hg:.^",
+  "git.default-relative-commit" : "HEAD^",
+  "git:arc.feature.start.default" : "origin/master",
+  "arc.feature.start.default" : "master",
+  "history.immutable" : false
+}
